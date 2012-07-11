@@ -62,5 +62,6 @@
   <modules>
   	<module>de.tudarmstadt.ukp.dkpro.lexsemresource.api-asl</module>
   	<module>de.tudarmstadt.ukp.dkpro.lexsemresource.core</module>
+  	<module>de.tudarmstadt.ukp.dkpro.lexsemresource.graph</module>
   </modules>
 </project>
