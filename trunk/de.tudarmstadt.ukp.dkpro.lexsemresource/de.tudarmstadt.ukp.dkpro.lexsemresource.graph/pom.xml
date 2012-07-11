@@ -8,4 +8,42 @@
   <groupId>de.tudarmstadt.ukp.dkpro.lexsemresource</groupId>
   <artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource.graph-asl</artifactId>
   <version>0.8.0-SNAPSHOT</version>
+  <dependencies>
+    <dependency>
+        <groupId>de.tudarmstadt.ukp.dkpro.lexsemresource</groupId>
+        <artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource.api-asl</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>de.tudarmstadt.ukp.dkpro.lexsemresource</groupId>
+        <artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource.core-asl</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.jgrapht</groupId>
+        <artifactId>jgrapht-jdk1.5</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.prefuse</groupId>
+        <artifactId>prefuse</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>mtj</groupId>
+        <artifactId>mtj</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>net.sf.jung</groupId>
+        <artifactId>jung-api</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>net.sf.jung</groupId>
+        <artifactId>jung-graph-impl</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>net.sf.jung</groupId>
+        <artifactId>jung-algorithms</artifactId>
+    </dependency>
+    <dependency>
+    	<groupId>commons-logging</groupId>
+    	<artifactId>commons-logging-api</artifactId>
+    </dependency>
+  </dependencies>
 </project>
