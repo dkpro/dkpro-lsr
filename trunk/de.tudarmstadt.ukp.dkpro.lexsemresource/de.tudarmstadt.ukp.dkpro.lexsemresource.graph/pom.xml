@@ -6,6 +6,6 @@
     <version>0.8.0-SNAPSHOT</version>
   </parent>
   <groupId>de.tudarmstadt.ukp.dkpro.lexsemresource</groupId>
-  <artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource.graph</artifactId>
+  <artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource.graph-asl</artifactId>
   <version>0.8.0-SNAPSHOT</version>
 </project>
