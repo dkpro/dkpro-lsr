@@ -21,5 +21,9 @@
   		<groupId>de.tudarmstadt.ukp.dkpro.lexsemresource</groupId>
   		<artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource.api-asl</artifactId>
   	</dependency>
+  	<dependency>
+  		<groupId>commons-lang</groupId>
+  		<artifactId>commons-lang</artifactId>
+  	</dependency>
   </dependencies>
 </project>
