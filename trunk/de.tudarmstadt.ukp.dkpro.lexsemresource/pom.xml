@@ -16,9 +16,9 @@
     <url>http://code.google.com/p/dkpro-lsr-asl/issues/list</url>
   </issueManagement>
   <scm>
-    <connection>http://dkpro-lsr-asl.googlecode.com/svn/de.tudarmstadt.ukp.dkpro.lsr-asl/trunk/</connection>
-    <developerConnection>scm:svn:https://dkpro-lsr-asl.googlecode.com/svn/de.tudarmstadt.ukp.dkpro.lsr-asl/trunk/</developerConnection>
-    <url>http://code.google.com/p/dkpro-lsr-asl/source/browse/de.tudarmstadt.ukp.dkpro.lsr-asl/trunk</url>
+    <connection>http://dkpro-lsr-asl.googlecode.com/svn/de.tudarmstadt.ukp.dkpro.lexsemresource-asl/trunk/</connection>
+    <developerConnection>scm:svn:https://dkpro-lsr-asl.googlecode.com/svn/de.tudarmstadt.ukp.dkpro.lexsemresource-asl/trunk/</developerConnection>
+    <url>http://code.google.com/p/dkpro-lsr-asl/source/browse/de.tudarmstadt.ukp.dkpro.lexsemresource-asl/trunk</url>
   </scm>
   <repositories>
       <repository>
