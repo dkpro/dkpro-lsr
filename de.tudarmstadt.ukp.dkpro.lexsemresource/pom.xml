@@ -91,6 +91,7 @@
   	<module>de.tudarmstadt.ukp.dkpro.lexsemresource.api</module>
   	<module>de.tudarmstadt.ukp.dkpro.lexsemresource.core</module>
   	<module>de.tudarmstadt.ukp.dkpro.lexsemresource.graph</module>
+    <module>de.tudarmstadt.ukp.dkpro.lexsemresource.wiktionary</module>
   	<module>de.tudarmstadt.ukp.dkpro.lexsemresource.wordnet</module>
   </modules>
 </project>
