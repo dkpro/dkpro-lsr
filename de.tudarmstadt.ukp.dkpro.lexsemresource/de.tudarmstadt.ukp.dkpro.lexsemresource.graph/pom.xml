@@ -43,7 +43,7 @@
         <artifactId>prefuse</artifactId>
     </dependency>
     <dependency>
-        <groupId>mtj</groupId>
+        <groupId>com.googlecode.matrix-toolkits-java</groupId>
         <artifactId>mtj</artifactId>
     </dependency>
     <dependency>
