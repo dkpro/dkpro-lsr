@@ -10,6 +10,34 @@
   <version>0.8.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>DKPro Lexical Semantic Resource</name>
+  <url>http://code.google.com/p/dkpro-lsr-asl/</url>
+  <issueManagement>
+    <system>Google Code</system>
+    <url>http://code.google.com/p/dkpro-lsr-asl/issues/list</url>
+  </issueManagement>
+  <scm>
+    <connection>http://dkpro-lsr-asl.googlecode.com/svn/de.tudarmstadt.ukp.dkpro.lsr-asl/trunk/</connection>
+    <developerConnection>scm:svn:https://dkpro-lsr-asl.googlecode.com/svn/de.tudarmstadt.ukp.dkpro.lsr-asl/trunk/</developerConnection>
+    <url>http://code.google.com/p/dkpro-lsr-asl/source/browse/de.tudarmstadt.ukp.dkpro.lsr-asl/trunk</url>
+  </scm>
+  <repositories>
+      <repository>
+          <id>ukp-oss</id>
+          <url>http://zoidberg.ukp.informatik.tu-darmstadt.de/artifactory/public-releases</url>
+          <releases>
+              <enabled>true</enabled>
+          </releases>
+          <snapshots>
+              <enabled>false</enabled>
+          </snapshots>
+      </repository>
+  </repositories>
+  <distributionManagement>
+      <repository>
+          <id>ukp-oss</id>
+          <url>dav:https://zoidberg.ukp.informatik.tu-darmstadt.de/artifactory/public-ukp-releases-local</url>
+      </repository>
+  </distributionManagement>
   <dependencies>
   	<dependency>
   		<groupId>junit</groupId>
@@ -112,4 +140,65 @@
     <module>de.tudarmstadt.ukp.dkpro.lexsemresource.wiktionary</module>
   	<module>de.tudarmstadt.ukp.dkpro.lexsemresource.wordnet</module>
   </modules>
+  <build>
+      <plugins>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-javadoc-plugin</artifactId>
+              <inherited>false</inherited>
+              <configuration>
+                  <notimestamp>true</notimestamp>
+                  <!-- Exclude UIMA types -->
+                  <excludePackageNames>*.type</excludePackageNames>
+              </configuration>
+          </plugin>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-surefire-plugin</artifactId>
+              <configuration>
+                  <argLine>-Xmx1g</argLine>
+              </configuration>
+          </plugin>
+      </plugins>
+  </build>
+  <profiles>
+      <profile>
+          <id>rat-check</id>
+          <activation>
+              <file>
+                  <exists>src/main/java</exists>
+              </file>
+          </activation>
+          <build>
+              <plugins>
+                  <plugin>
+                      <groupId>org.apache.rat</groupId>
+                      <artifactId>apache-rat-plugin</artifactId>
+                      <executions>
+                          <execution>
+                              <id>default</id>
+                              <phase>verify</phase>
+                              <goals>
+                                  <goal>check</goal>
+                              </goals>
+                              <configuration>
+                                  <excludes>
+                                      <!-- release generated artifact -->
+                                      <exclude>release.properties</exclude>
+                                      <exclude>CHANGES</exclude>
+                                      <exclude>NOTICE</exclude>
+                                      <exclude>README</exclude>
+                                      <exclude>src/main/resources/**/*</exclude>
+                                      <exclude>src/test/resources/**/*</exclude>
+                                      <!-- generated JCas wrappers -->
+                                      <exclude>src/main/java/**/type/**/*</exclude>
+                                  </excludes>
+                              </configuration>
+                          </execution>
+                      </executions>
+                  </plugin>
+              </plugins>
+          </build>
+      </profile>
+  </profiles>
 </project>
