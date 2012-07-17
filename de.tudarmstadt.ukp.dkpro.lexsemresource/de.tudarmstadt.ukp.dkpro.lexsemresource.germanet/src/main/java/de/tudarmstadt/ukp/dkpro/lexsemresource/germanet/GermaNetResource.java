@@ -3,35 +3,24 @@
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Public License v3.0
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/gpl-3.0.txt
+ ******************************************************************************/
 package de.tudarmstadt.ukp.dkpro.lexsemresource.germanet;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.tud.sir.gn.GermaNetObject;
-import org.tud.sir.gn.GermaNetParser;
-import org.tud.sir.gn.Synset;
-import org.tud.sir.gn.WordSense;
-import org.tud.sir.util.Constant;
+import javax.xml.stream.XMLStreamException;
 
 import de.tudarmstadt.ukp.dkpro.lexsemresource.Entity;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.Entity.PoS;
@@ -39,6 +28,11 @@ import de.tudarmstadt.ukp.dkpro.lexsemresource.core.AbstractResource;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.exception.LexicalSemanticResourceException;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.germanet.util.GermaNetEntityIterable;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.germanet.util.GermaNetUtils;
+import de.tuebingen.uni.sfs.germanet.api.ConRel;
+import de.tuebingen.uni.sfs.germanet.api.GermaNet;
+import de.tuebingen.uni.sfs.germanet.api.LexRel;
+import de.tuebingen.uni.sfs.germanet.api.LexUnit;
+import de.tuebingen.uni.sfs.germanet.api.Synset;
 
 /**
  * @author zesch
@@ -49,39 +43,54 @@ public class GermaNetResource extends AbstractResource {
 	private final static String resourceName = "GermaNet";
 	private final static String resourceVersion = "5.0";
 
-	private final GermaNetParser gnParser;
-	private final GermaNetObject gnObject;
+	private final GermaNet gn;
 
-	public GermaNetResource(String path){
-    	// Check if we got an URL (file URL)
-    	String dir = null;
-    	try {
-    		URL url = new URL(path);
-    		if ("file".equals(url.getProtocol())) {
-    			dir = new File(url.getPath()).getAbsolutePath();
-    		}
-    		else {
-    			throw new IllegalArgumentException(
-    					"GermaNet resources have to reside on the file "+
-    					"system, but are at ["+url+"]");
-    		}
-    	}
-    	catch (IOException e) {
-    		// Ignore
-    	}
+	public GermaNetResource(String path, boolean ignoreCase)
+	    throws LexicalSemanticResourceException
+	{
+        // Check if we got an URL (file URL)
+        String dir = null;
+        try {
+            URL url = new URL(path);
+            if ("file".equals(url.getProtocol())) {
+                dir = new File(url.getPath()).getAbsolutePath();
+            }
+            else {
+                throw new IllegalArgumentException(
+                        "GermaNet resources have to reside on the file "+
+                        "system, but are at ["+url+"]");
+            }
+        }
+        catch (IOException e) {
+            // Ignore
+        }
 
-    	if (dir == null) {
-    		dir = path;
-    	}
+        if (dir == null) {
+            dir = path;
+        }
 
-		this.gnParser = new GermaNetParser(true);
-		this.gnObject = gnParser.parse(dir);
-		setIsCaseSensitive(isCaseSensitive);     //set isCaseSensitive to default value
+        try {
+            this.gn = new GermaNet(dir, ignoreCase);
+            setIsCaseSensitive(!ignoreCase);
+        }
+        catch (FileNotFoundException e) {
+            throw new LexicalSemanticResourceException(e);
+        }
+        catch (XMLStreamException e) {
+            throw new LexicalSemanticResourceException(e);
+        }
+        catch (IOException e) {
+            throw new LexicalSemanticResourceException(e);
+        }
+	}
+	
+	public GermaNetResource(String path) throws LexicalSemanticResourceException{
+	    this(path, false);
 	}
 
 
     public boolean containsEntity(Entity entity) throws LexicalSemanticResourceException {
-        Set<Synset> synset = GermaNetUtils.entityToSynsets(gnObject, entity, isCaseSensitive);
+        Set<Synset> synset = GermaNetUtils.entityToSynsets(gn, entity);
         if (synset.size() == 0) {
             return false;
         }
@@ -96,41 +105,25 @@ public class GermaNetResource extends AbstractResource {
             return false;
         }
 
-    	List<WordSense> al = gnObject.getWordSenses(lexeme);
-
-    	if (al == null || al.size() == 0) {
-			return false;
-		}
-
-    	if (!isCaseSensitive) {
-    		return true;
-    	}
-    	else {
-    		for(WordSense ws : al) {
-    			if (lexeme.equals(ws.getGrapheme())) {
-                    return true;
-    			}
-    		}
-    	}
-        return false;
+        return (gn.getLexUnits(lexeme, true).size() > 0);
     }
 
 
     public Set<Entity> getEntity(String lexeme) throws LexicalSemanticResourceException {
         Entity e = new Entity(lexeme);
-        Set<Entity> entities = GermaNetUtils.synsetsToEntities( GermaNetUtils.entityToSynsets(gnObject, e, isCaseSensitive) );
+        Set<Entity> entities = GermaNetUtils.synsetsToEntities( GermaNetUtils.entityToSynsets(gn, e) );
         return entities;
     }
 
     public Set<Entity> getEntity(String lexeme, PoS pos) throws LexicalSemanticResourceException {
         Entity e = new Entity(lexeme, pos);
-        Set<Entity> entities = GermaNetUtils.synsetsToEntities( GermaNetUtils.entityToSynsets(gnObject, e , isCaseSensitive) );
+        Set<Entity> entities = GermaNetUtils.synsetsToEntities( GermaNetUtils.entityToSynsets(gn, e) );
         return entities;
     }
 
     public Set<Entity> getEntity(String lexeme, PoS pos, String sense) throws LexicalSemanticResourceException {
         Entity e = new Entity(lexeme, pos, sense);
-        Set<Entity> entities = GermaNetUtils.synsetsToEntities( GermaNetUtils.entityToSynsets(gnObject, e, isCaseSensitive) );
+        Set<Entity> entities = GermaNetUtils.synsetsToEntities( GermaNetUtils.entityToSynsets(gn, e) );
         return entities;
     }
 
@@ -141,13 +134,11 @@ public class GermaNetResource extends AbstractResource {
 	}
 
 	public Iterable<Entity> getEntities() throws LexicalSemanticResourceException {
-		return new GermaNetEntityIterable(gnObject);
+		return new GermaNetEntityIterable(gn);
 	}
 
 	public int getNumberOfEntities() throws LexicalSemanticResourceException {
-		return gnObject.getWordSensesAmount(Constant.ADJECTIVE)
-		+gnObject.getWordSensesAmount(Constant.VERB)
-		+gnObject.getWordSensesAmount(Constant.NOUN);
+		return gn.numSynsets();
 	}
 
     public Set<Entity> getParents(Entity entity) throws LexicalSemanticResourceException {
@@ -174,85 +165,59 @@ public class GermaNetResource extends AbstractResource {
 
 
 
-    @SuppressWarnings("unchecked")
-    public Set<String> getRelatedLexemes(String lexeme, PoS pos, String sense, LexicalRelation lexicalRelation) throws LexicalSemanticResourceException {
-        WordSense wordSense = gnObject.getWordSense(lexeme, GermaNetUtils.mapPos(pos), new Integer(sense));
-
-        if (wordSense == null) {
-            return Collections.emptySet();
-        }
-
-        if(isCaseSensitive) {
-            if(!wordSense.getGrapheme().equals(lexeme)) {
-                return Collections.emptySet();
-            }
-        }
-
+    public Set<String> getRelatedLexemes(String lexeme, PoS pos, String sense, LexicalRelation lexicalRelation)
+        throws LexicalSemanticResourceException
+    {
+        
         Set<String> resultLexemes = new HashSet<String>();
 
-        if (lexicalRelation.equals(LexicalRelation.antonymy)) {
-            List<WordSense> antonyms = wordSense.getAntonyms();
-            if (antonyms != null) {
-                for (WordSense antonym : antonyms) {
-                    resultLexemes.add(antonym.getGrapheme());
+        for (LexUnit lexUnit : gn.getLexUnits(lexeme, GermaNetUtils.mapPos(pos), true)) {
+            if (Integer.toString(lexUnit.getSense()).equals(sense)) {
+                if (lexicalRelation.equals(LexicalRelation.antonymy)) {
+                    for (LexUnit antonym : lexUnit.getRelatedLexUnits(LexRel.has_antonym)) {
+                        resultLexemes.add(antonym.getOrthForm());
+                    }
                 }
-            }
-        }
-        else if (lexicalRelation.equals(LexicalRelation.synonymy)) {
-            Synset synset = wordSense.getSynset();
-            List<WordSense> synonyms = synset.getWordSenses();
-            if (synonyms != null) {
-                for (WordSense synonym : synonyms) {
-                    // a lexeme is not a synonym to itself
-                    if (!synonym.getGrapheme().equals(lexeme)) {
-                        resultLexemes.add(synonym.getGrapheme());
+                else if (lexicalRelation.equals(LexicalRelation.synonymy)) {
+                    for (LexUnit synonym : lexUnit.getRelatedLexUnits(LexRel.has_synonym)) {
+                        resultLexemes.add(synonym.getOrthForm());
                     }
                 }
             }
-        }
-        else {
-            return Collections.emptySet();
         }
 
         return resultLexemes;
     }
 
 
-    @SuppressWarnings("unchecked")
-    public Set<Entity> getRelatedEntities(Entity entity, SemanticRelation semanticRelation) throws LexicalSemanticResourceException {
+    public Set<Entity> getRelatedEntities(Entity entity, SemanticRelation semanticRelation)
+        throws LexicalSemanticResourceException
+    {
         if(!containsEntity(entity)) {
             return Collections.emptySet();
         }
         Set<Synset> resultSynsets = new HashSet<Synset>();
 
-        Set<Synset> synsets = GermaNetUtils.entityToSynsets(gnObject, entity, isCaseSensitive);
+        Set<Synset> synsets = GermaNetUtils.entityToSynsets(gn, entity);
         for (Synset synset : synsets) {
             if (semanticRelation.equals(SemanticRelation.holonymy)) {
-                if (synset.getHolonyms() != null) {
-                    resultSynsets.addAll(synset.getHolonyms());
-                }
+                resultSynsets.addAll(synset.getRelatedSynsets(ConRel.has_component_holonym));
+                resultSynsets.addAll(synset.getRelatedSynsets(ConRel.has_member_holonym));
+                resultSynsets.addAll(synset.getRelatedSynsets(ConRel.has_portion_holonym));
             }
             else if (semanticRelation.equals(SemanticRelation.hypernymy)) {
-                if (synset.getHyperonyms() != null) {
-                    resultSynsets.addAll(synset.getHyperonyms());
-                }
+                resultSynsets.addAll(synset.getRelatedSynsets(ConRel.has_hypernym));
             }
             else if (semanticRelation.equals(SemanticRelation.hyponymy)) {
-                if (synset.getHyponyms() != null) {
-                    resultSynsets.addAll(synset.getHyponyms());
-                }
+                resultSynsets.addAll(synset.getRelatedSynsets(ConRel.has_hyponym));
             }
             else if (semanticRelation.equals(SemanticRelation.meronymy)) {
-                if (synset.getMeronyms() != null) {
-                    resultSynsets.addAll(synset.getMeronyms());
-                }
+                resultSynsets.addAll(synset.getRelatedSynsets(ConRel.has_component_meronym));
+                resultSynsets.addAll(synset.getRelatedSynsets(ConRel.has_member_meronym));
+                resultSynsets.addAll(synset.getRelatedSynsets(ConRel.has_portion_meronym));
             }
             else if (semanticRelation.equals(SemanticRelation.cohyponymy)) {
-                if (synset.getHyperonyms() != null) {
-                    for (Object hyperonym : synset.getHyperonyms()) {
-                        resultSynsets.addAll(((Synset) hyperonym).getHyponyms());
-                    }
-                }
+                resultSynsets.addAll(synset.getRelatedSynsets(ConRel.has_hyponym));
             }
         }
 

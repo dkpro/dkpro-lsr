@@ -3,36 +3,24 @@
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Public License v3.0
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/gpl-3.0.txt
+ ******************************************************************************/
 package de.tudarmstadt.ukp.dkpro.lexsemresource.germanet.util;
 
 import java.util.Iterator;
 
-import org.tud.sir.gn.Synset;
-
 import de.tudarmstadt.ukp.dkpro.lexsemresource.Entity;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.LexicalSemanticEntityIterator;
+import de.tuebingen.uni.sfs.germanet.api.Synset;
 
-/**
- * @author Anouar
- *
- */
 public class GermaNetEntityIterator extends LexicalSemanticEntityIterator {
 
-	private Iterator synsets;
+	private Iterator<Synset> synsets;
 	
-	public GermaNetEntityIterator(Iterator synsets){
+	public GermaNetEntityIterator(Iterator<Synset> synsets){
 		this.synsets = synsets;
 	}
 
@@ -46,5 +34,4 @@ public class GermaNetEntityIterator extends LexicalSemanticEntityIterator {
         Synset synset = (Synset) synsets.next();
         return GermaNetUtils.synsetToEntity(synset);
 	}
-
 }
