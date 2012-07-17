@@ -3,18 +3,11 @@
  * Ubiquitous Knowledge Processing (UKP) Lab
  * Technische Universität Darmstadt
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *******************************************************************************/
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Public License v3.0
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/gpl-3.0.txt
+ ******************************************************************************/
 package de.tudarmstadt.ukp.dkpro.lexsemresource.germanet.util;
 
 import java.util.HashMap;
@@ -23,12 +16,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.tud.sir.gn.GermaNetObject;
-import org.tud.sir.gn.Synset;
-import org.tud.sir.gn.WordSense;
-
 import de.tudarmstadt.ukp.dkpro.lexsemresource.Entity;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.Entity.PoS;
+import de.tuebingen.uni.sfs.germanet.api.GermaNet;
+import de.tuebingen.uni.sfs.germanet.api.LexUnit;
+import de.tuebingen.uni.sfs.germanet.api.Synset;
+import de.tuebingen.uni.sfs.germanet.api.WordCategory;
 
 public class GermaNetUtils {
 
@@ -49,10 +42,10 @@ public class GermaNetUtils {
      * @return Creates an Entity from a synset.
      */
     public static Entity synsetToEntity(Synset synset) {
-        return new Entity(getSynsetLexemes(synset), GermaNetUtils.mapPos(synset.getPartOfSpeech()));
+        return new Entity(getSynsetLexemes(synset), GermaNetUtils.mapPos(synset.getWordCategory()));
     }
 
-    public static Set<Synset> entityToSynsets(GermaNetObject gno, Entity entity, boolean isCaseSensitive) {
+    public static Set<Synset> entityToSynsets(GermaNet gn, Entity entity) {
         Set<Synset> synsets = new HashSet<Synset>();
         
         Set<String> lexemes = entity.getLexemes();
@@ -61,36 +54,13 @@ public class GermaNetUtils {
         if (lsrPos.equals(Entity.UNKNOWN_POS)) {
             // get the synsets for each lexeme
             for (String lexeme : lexemes) { 
-            	if(isCaseSensitive){
-                	List sensesList = gno.getWordSenses(lexeme);
-                	if(sensesList == null) continue;
-            	    for(int i = 0; i < sensesList.size(); ++i){
-            	    	WordSense ws = (WordSense)sensesList.get(i);
-            	    	if(lexeme.equals(ws.getGrapheme()))
-            	    		synsets.add(ws.getSynset());
-            	    	}            	
-            	}else{
-                    if (gno.getSynsets(lexeme) != null) 
-                        synsets.addAll( gno.getSynsets(lexeme) );                              	
-            	}
+                synsets.addAll( gn.getSynsets(lexeme) );                              	
             }
-        } else {
+        }
+        else {
             // get the synsets for each lexeme
             for (String lexeme : lexemes) {            	
-            	if(isCaseSensitive){
-                	List sensesList = gno.getWordSenses(lexeme, GermaNetUtils.mapPos(lsrPos));
-                	if(sensesList == null) continue;
-            	    for(int i = 0; i < sensesList.size(); ++i){
-            	    	WordSense ws = (WordSense)sensesList.get(i);
-            	    	if(lexeme.equals(ws.getGrapheme()))
-            	    		synsets.add(ws.getSynset());
-            	    	}
-            	    
-            	}else{
-                    if (gno.getSynsets(lexeme, GermaNetUtils.mapPos(lsrPos)) != null) {
-                        synsets.addAll( gno.getSynsets(lexeme, GermaNetUtils.mapPos(lsrPos)) );
-                    }                            	
-            	}             
+                synsets.addAll( gn.getSynsets(lexeme, GermaNetUtils.mapPos(lsrPos)) );
             }
         }        
         return synsets;
@@ -103,24 +73,21 @@ public class GermaNetUtils {
             return null;
         }
         
-        List senses = synset.getWordSenses();
-        for (int i = 0; i < senses.size(); i++) {
-            WordSense wordSense = (WordSense) senses.get(i);
-            String sense = new Integer(wordSense.getSense()).toString();
-            String lexeme = wordSense.getGrapheme();
-            result.put(lexeme, sense);
+        List<LexUnit> lexUnits= synset.getLexUnits();
+        for (LexUnit lexUnit : lexUnits) {
+            result.put(lexUnit.getOrthForm(), Integer.toString(lexUnit.getSense()));
         }
         return result;
     }
 
-    public static PoS mapPos(char pos) {
-        if (pos ==  'n') {
+    public static PoS mapPos(WordCategory cat) {
+        if (cat.equals(WordCategory.nomen)) {
             return PoS.n;
         }
-        else if (pos == 'v') {
+        else if (cat.equals(WordCategory.verben)) {
             return PoS.v;
         }
-        else if (pos == 'a') {
+        else if (cat.equals(WordCategory.adj)) {
             return PoS.adj;
         }
         else {
@@ -128,21 +95,19 @@ public class GermaNetUtils {
         }
     }
 
-    public static char mapPos(PoS lsrPos) {
+    public static WordCategory mapPos(PoS lsrPos) {
         if (lsrPos.equals(PoS.n)) {
-            return 'n';
+            return WordCategory.nomen;
         }
         else if (lsrPos.equals(PoS.v)) {
-            return 'v';
+            return WordCategory.verben;
         }
-        
-        // adj and adv both map to 'a'
         else if (lsrPos.equals(PoS.adj) || lsrPos.equals(PoS.adv)) {
-            return 'a';
+            return WordCategory.adj;
         }
-        
         else {
-            return 'u';
+            return WordCategory.nomen;
         }
     }
+
 }
