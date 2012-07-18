@@ -20,11 +20,11 @@
   <parent>
     <artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource-asl</artifactId>
     <groupId>de.tudarmstadt.ukp.dkpro.lexsemresource</groupId>
-    <version>0.8.0</version>
+    <version>0.8.1-SNAPSHOT</version>
   </parent>
   <groupId>de.tudarmstadt.ukp.dkpro.lexsemresource</groupId>
   <artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource.core-asl</artifactId>
-  <version>0.8.0</version>
+  <version>0.8.1-SNAPSHOT</version>
   <dependencies>
   	<dependency>
   		<groupId>commons-io</groupId>
