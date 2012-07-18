@@ -24,7 +24,7 @@
   </parent>
   <groupId>de.tudarmstadt.ukp.dkpro.lexsemresource</groupId>
   <artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource-asl</artifactId>
-  <version>0.8.0</version>
+  <version>0.8.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>DKPro Lexical Semantic Resource</name>
   <url>http://code.google.com/p/dkpro-lsr-asl/</url>
@@ -33,9 +33,9 @@
     <url>http://code.google.com/p/dkpro-lsr-asl/issues/list</url>
   </issueManagement>
   <scm>
-    <connection>http://dkpro-lsr.googlecode.com/svn/tags/de.tudarmstadt.ukp.dkpro.lexsemresource-asl-0.8.0</connection>
-    <developerConnection>scm:svn:https://dkpro-lsr.googlecode.com/svn/tags/de.tudarmstadt.ukp.dkpro.lexsemresource-asl-0.8.0</developerConnection>
-    <url>http://code.google.com/p/dkpro-lsr/source/browse/#svn/tags/de.tudarmstadt.ukp.dkpro.lexsemresource-asl-0.8.0</url>
+    <connection>http://dkpro-lsr.googlecode.com/svn/trunk/de.tudarmstadt.ukp.dkpro.lexsemresource</connection>
+    <developerConnection>scm:svn:https://dkpro-lsr.googlecode.com/svn/trunk/de.tudarmstadt.ukp.dkpro.lexsemresource/</developerConnection>
+    <url>http://code.google.com/p/dkpro-lsr/source/browse/#svn/trunk/de.tudarmstadt.ukp.dkpro.lexsemresource</url>
   </scm>
   <repositories>
       <repository>
@@ -68,32 +68,32 @@
   		<dependency>
   			<groupId>de.tudarmstadt.ukp.dkpro.lexsemresource</groupId>
   			<artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource.api-asl</artifactId>
-  			<version>0.8.0</version>
+  			<version>0.8.1-SNAPSHOT</version>
   		</dependency>
         <dependency>
             <groupId>de.tudarmstadt.ukp.dkpro.lexsemresource</groupId>
             <artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource.core-asl</artifactId>
-            <version>0.8.0</version>
+            <version>0.8.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>de.tudarmstadt.ukp.dkpro.lexsemresource</groupId>
             <artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource.graph-asl</artifactId>
-            <version>0.8.0</version>
+            <version>0.8.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>de.tudarmstadt.ukp.dkpro.lexsemresource</groupId>
             <artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource.wikipedia-asl</artifactId>
-            <version>0.8.0</version>
+            <version>0.8.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>de.tudarmstadt.ukp.dkpro.lexsemresource</groupId>
             <artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource.wiktionary-asl</artifactId>
-            <version>0.8.0</version>
+            <version>0.8.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>de.tudarmstadt.ukp.dkpro.lexsemresource</groupId>
             <artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource.wordnet-asl</artifactId>
-            <version>0.8.0</version>
+            <version>0.8.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.jgrapht</groupId>
