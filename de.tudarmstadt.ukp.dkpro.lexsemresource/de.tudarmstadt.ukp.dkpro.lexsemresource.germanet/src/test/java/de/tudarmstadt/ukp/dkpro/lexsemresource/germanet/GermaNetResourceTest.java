@@ -215,27 +215,24 @@ public class GermaNetResourceTest {
     }
 
     @Test
-	@Ignore("This test case cannot pass.  The reason is that germannet API returns the wrong " +
-			"lexeme: '-kopifg', the correct lexeme should be 'kopifg'. So there may be some bugs " +
-			"in the GermaNetParser.")
     public void testGetEntities() throws LexicalSemanticResourceException {
         int i=0;
         for (Entity entity : germaNetCaseInsensitive.getEntities()) {
-            Set<String> testLexemes = entity.getLexemes();
-            for (String t : testLexemes) {
-                System.out.println(t + " " + entity.getSense(t));
-                System.out.println(entity.getPos());
-            }
+//            Set<String> testLexemes = entity.getLexemes();
+//            for (String t : testLexemes) {
+//                System.out.println(t + " " + entity.getSense(t));
+//                System.out.println(entity.getPos());
+//            }
             assertTrue(entity.toString(), germaNetCaseInsensitive.containsEntity(entity));
             i++;
         }
 
         for (Entity entity : germaNet.getEntities()) {
             Set<String> testLexemes = entity.getLexemes();
-            for (String t : testLexemes) {
-                System.out.println(t + " " + entity.getSense(t));
-                System.out.println(entity.getPos());
-            }
+//            for (String t : testLexemes) {
+//                System.out.println(t + " " + entity.getSense(t));
+//                System.out.println(entity.getPos());
+//            }
             assertTrue(entity.toString(), germaNet.containsEntity(entity));
             i++;
         }
@@ -264,7 +261,6 @@ public class GermaNetResourceTest {
         }
     }
 
-//    @Ignore
     @Test
     public void testAmbiguity() throws LexicalSemanticResourceException {
         Map<String,Integer> lexemeMap = new HashMap<String,Integer>();
@@ -295,6 +291,7 @@ public class GermaNetResourceTest {
 
 
 	@Test
+	@Ignore("This test produces too much console output and runs too slow. Deactivated for now.")
 	public void testHyponymMap()
 		throws Exception
 	{
