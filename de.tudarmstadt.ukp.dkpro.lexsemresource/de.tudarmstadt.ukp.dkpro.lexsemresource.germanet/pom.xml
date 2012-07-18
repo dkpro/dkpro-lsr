@@ -46,4 +46,36 @@
   		<scope>test</scope>
   	</dependency>
   </dependencies>
+    <profiles>
+        <profile>
+            <id>rat-check</id>
+            <activation>
+                <file>
+                    <exists>src/main/java</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.rat</groupId>
+                        <artifactId>apache-rat-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default</id>
+                                <configuration>
+                                    <excludes>
+                                        <!-- 
+                                           Exclude all - We inherit from the ASL parent POM but we have
+                                           only GPL code in this part.
+                                        -->
+                                        <exclude>**/*</exclude> 
+                                    </excludes>
+                                </configuration>
+                            </execution>
+                        </executions>                       
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>      
+    </profiles>
 </project>
