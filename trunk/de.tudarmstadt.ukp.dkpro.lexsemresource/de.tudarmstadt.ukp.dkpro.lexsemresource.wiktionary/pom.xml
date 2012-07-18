@@ -37,7 +37,7 @@
   	<dependency>
   		<groupId>de.tudarmstadt.ukp.wiktionary</groupId>
   		<artifactId>de.tudarmstadt.ukp.wiktionary</artifactId>
-  		<version>0.13.2</version>
+  		<version>0.15.2</version>
   	</dependency>
   </dependencies>
 </project>
