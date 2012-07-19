@@ -77,6 +77,11 @@
         </dependency>
         <dependency>
             <groupId>de.tudarmstadt.ukp.dkpro.lexsemresource</groupId>
+            <artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource.germanet-gpl</artifactId>
+            <version>0.8.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>de.tudarmstadt.ukp.dkpro.lexsemresource</groupId>
             <artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource.graph-asl</artifactId>
             <version>0.8.1-SNAPSHOT</version>
         </dependency>
