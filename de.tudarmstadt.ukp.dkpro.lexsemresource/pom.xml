@@ -153,14 +153,14 @@
   	</dependencies>
   </dependencyManagement>
   <modules>
-  	<module>de.tudarmstadt.ukp.dkpro.lexsemresource.api</module>
-  	<module>de.tudarmstadt.ukp.dkpro.lexsemresource.core</module>
-    <module>de.tudarmstadt.ukp.dkpro.lexsemresource.germanet</module>
-  	<module>de.tudarmstadt.ukp.dkpro.lexsemresource.graph</module>
-<!--<module>de.tudarmstadt.ukp.dkpro.lexsemresource.openthesaurus</module>--> 
-    <module>de.tudarmstadt.ukp.dkpro.lexsemresource.wikipedia</module>
-    <module>de.tudarmstadt.ukp.dkpro.lexsemresource.wiktionary</module>
-  	<module>de.tudarmstadt.ukp.dkpro.lexsemresource.wordnet</module>
+  	<module>de.tudarmstadt.ukp.dkpro.lexsemresource.api-asl</module>
+  	<module>de.tudarmstadt.ukp.dkpro.lexsemresource.core-asl</module>
+    <module>de.tudarmstadt.ukp.dkpro.lexsemresource.germanet-gpl</module>
+  	<module>de.tudarmstadt.ukp.dkpro.lexsemresource.graph-asl</module>
+<!--<module>de.tudarmstadt.ukp.dkpro.lexsemresource.openthesaurus-asl</module>--> 
+    <module>de.tudarmstadt.ukp.dkpro.lexsemresource.wikipedia-asl</module>
+    <module>de.tudarmstadt.ukp.dkpro.lexsemresource.wiktionary-asl</module>
+  	<module>de.tudarmstadt.ukp.dkpro.lexsemresource.wordnet-asl</module>
   </modules>
   <build>
       <plugins>
