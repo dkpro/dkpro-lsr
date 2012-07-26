@@ -157,7 +157,7 @@
   	<module>de.tudarmstadt.ukp.dkpro.lexsemresource.core-asl</module>
     <module>de.tudarmstadt.ukp.dkpro.lexsemresource.germanet-gpl</module>
   	<module>de.tudarmstadt.ukp.dkpro.lexsemresource.graph-asl</module>
-<!--<module>de.tudarmstadt.ukp.dkpro.lexsemresource.openthesaurus-asl</module>--> 
+    <module>de.tudarmstadt.ukp.dkpro.lexsemresource.openthesaurus-asl</module> 
     <module>de.tudarmstadt.ukp.dkpro.lexsemresource.wikipedia-asl</module>
     <module>de.tudarmstadt.ukp.dkpro.lexsemresource.wiktionary-asl</module>
   	<module>de.tudarmstadt.ukp.dkpro.lexsemresource.wordnet-asl</module>
