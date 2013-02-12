@@ -20,6 +20,7 @@ package de.tudarmstadt.ukp.dkpro.lexsemresource.wordnet;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -91,7 +92,8 @@ public class WordNetResource extends AbstractResource {
         }
     }
 
-    public boolean containsLexeme(String lexeme) throws LexicalSemanticResourceException {
+    @Override
+	public boolean containsLexeme(String lexeme) throws LexicalSemanticResourceException {
         if (lexeme == null) {
             return false;
         }
@@ -118,7 +120,8 @@ public class WordNetResource extends AbstractResource {
     }
 
 
-    public boolean containsEntity(Entity entity) throws LexicalSemanticResourceException {
+    @Override
+	public boolean containsEntity(Entity entity) throws LexicalSemanticResourceException {
         Set<Synset> synsets = WordNetUtils.entityToSynsets(dict, entity, isCaseSensitive);
         if (synsets.size() == 0) {
 			return false;
@@ -126,18 +129,21 @@ public class WordNetResource extends AbstractResource {
         return true;
     }
 
-    public Set<Entity> getEntity(String lexeme) throws LexicalSemanticResourceException {
+    @Override
+	public Set<Entity> getEntity(String lexeme) throws LexicalSemanticResourceException {
         Set<Synset> synsets = WordNetUtils.toSynset(dict, lexeme, isCaseSensitive);
         return WordNetUtils.synsetsToEntities(synsets);
     }
 
-    public Set<Entity> getEntity(String lexeme, PoS pos) throws LexicalSemanticResourceException {
+    @Override
+	public Set<Entity> getEntity(String lexeme, PoS pos) throws LexicalSemanticResourceException {
         Set<Synset> synsets = WordNetUtils.toSynset(dict, lexeme, pos, isCaseSensitive);
         return WordNetUtils.synsetsToEntities(synsets);
     }
 
     // Uses offset as sense ID
-    public Set<Entity> getEntity(String lexeme, PoS pos, String sense) throws LexicalSemanticResourceException {
+    @Override
+	public Set<Entity> getEntity(String lexeme, PoS pos, String sense) throws LexicalSemanticResourceException {
         Set<Entity> entities = new HashSet<Entity>();
         Entity e = WordNetUtils.getExactEntity(dict, lexeme, pos, sense, isCaseSensitive);
         if (e != null) {
@@ -155,7 +161,8 @@ public class WordNetResource extends AbstractResource {
         return entities;
     }
 
-    public Set<Entity> getParents(Entity entity) throws LexicalSemanticResourceException {
+    @Override
+	public Set<Entity> getParents(Entity entity) throws LexicalSemanticResourceException {
         // deliberately used a set to collect results to allow other relation types to be added
         Set<Entity> parents = new HashSet<Entity>();
         parents.addAll(getRelatedEntities(entity, SemanticRelation.hypernymy));
@@ -163,7 +170,8 @@ public class WordNetResource extends AbstractResource {
     }
 
     // TODO is there a more efficient way?
-    public int getNumberOfEntities() throws LexicalSemanticResourceException  {
+    @Override
+	public int getNumberOfEntities() throws LexicalSemanticResourceException  {
         if (this.numberOfEntities < 0) {
             int i=0;
             try {
@@ -197,30 +205,36 @@ public class WordNetResource extends AbstractResource {
         return numberOfEntities;
     }
 
-    public Iterable<Entity> getEntities() {
+    @Override
+	public Iterable<Entity> getEntities() {
         return new WordNetEntityIterable(dict);
     }
 
-    public Set<Entity> getChildren(Entity entity) throws LexicalSemanticResourceException  {
+    @Override
+	public Set<Entity> getChildren(Entity entity) throws LexicalSemanticResourceException  {
         // deliberately used a set to collect results to allow other relation types to be added
         Set<Entity> children = new HashSet<Entity>();
         children.addAll(getRelatedEntities(entity, SemanticRelation.hyponymy));
         return children;
     }
 
-    public String getResourceName() {
+    @Override
+	public String getResourceName() {
         return RESOURCE_NAME;
     }
 
-    public String getResourceVersion()   {
+    @Override
+	public String getResourceVersion()   {
         return new Double(v.getNumber()).toString();
     }
 
-    public int getShortestPathLength(Entity firstEntity, Entity secondEntity) {
+    @Override
+	public int getShortestPathLength(Entity firstEntity, Entity secondEntity) {
         throw new UnsupportedOperationException();
     }
 
-    public String getGloss(Entity entity) throws LexicalSemanticResourceException  {
+    @Override
+	public String getGloss(Entity entity) throws LexicalSemanticResourceException  {
         StringBuilder sb = new StringBuilder();
         Set<Synset> synsets = WordNetUtils.entityToSynsets(dict, entity, isCaseSensitive);
         for (Synset synset : synsets) {
@@ -231,7 +245,8 @@ public class WordNetResource extends AbstractResource {
     }
 
 
-    public Set<String> getRelatedLexemes(String lexeme, PoS pos, String sense, LexicalRelation lexicalRelation) throws LexicalSemanticResourceException {
+    @Override
+	public Set<String> getRelatedLexemes(String lexeme, PoS pos, String sense, LexicalRelation lexicalRelation) throws LexicalSemanticResourceException {
 
         Set<String> relatedLexemes = new HashSet<String>();
 
@@ -294,7 +309,8 @@ public class WordNetResource extends AbstractResource {
         return relatedLexemes;
     }
 
-    public Set<Entity> getRelatedEntities(Entity entity, SemanticRelation semanticRelation) throws LexicalSemanticResourceException  {
+    @Override
+	public Set<Entity> getRelatedEntities(Entity entity, SemanticRelation semanticRelation) throws LexicalSemanticResourceException  {
         Set<Entity> relatedEntities = new HashSet<Entity>();
         Set<Synset> synsets = WordNetUtils.entityToSynsets(dict, entity, isCaseSensitive);
 
@@ -354,6 +370,51 @@ public class WordNetResource extends AbstractResource {
         return null;
     }
 
+	/**
+	 * This is a small utility to get direct access to such JWNL relations and related synsets that
+	 * are not handled with the generic LexSemResource API. Queries synsets related to the Entity
+	 * connected via an arbitrary relation represented by a STRING (its name). It attempts to
+	 * collect a NodeList via reflection, calling get"STRING"s() function. This is the usual naming
+	 * followed by JWNL for all kinds of relations.
+	 */
+    public Set<Entity> getRelatedEntitiesByName(Entity entity, String semanticRelation) throws LexicalSemanticResourceException  {
+        Set<Entity> relatedEntities = new HashSet<Entity>();
+        Set<Synset> synsets = WordNetUtils.entityToSynsets(dict, entity, isCaseSensitive);
+
+        for (Synset synset : synsets) {
+
+            PointerTargetNodeList nodeList = getNodeListByRelationName(synset, semanticRelation);
+
+            if (nodeList != null) {
+                for (Object node : nodeList) {
+                    PointerTargetNode ptNode = (PointerTargetNode) (node);
+                    Synset nodeSynset = ptNode.getSynset();
+                    relatedEntities.add(WordNetUtils.synsetToEntity(nodeSynset));
+                }
+            }
+        }
+        return relatedEntities;
+    }
+
+    private PointerTargetNodeList getNodeListByRelationName(Synset synset, String relationType) throws LexicalSemanticResourceException {
+        try {
+
+        	Class<? extends PointerUtils> cls = pUtils.getClass();
+        	Class[] params = new Class[1];
+        	params[0] = Synset.class;
+        	String methodName = "get"+relationType+"s";
+
+        	Method method = cls.getDeclaredMethod(methodName, params);
+        	return (PointerTargetNodeList) method.invoke(pUtils, synset);
+        	
+		} catch (Exception e) {
+            // silently catch that - I do not know why JWNL throws NullPointerException exception here
+			// if an Exception occured, we simply return a null as the result NodeList
+//			e.printStackTrace();
+//			throw new LexicalSemanticResourceException(e.getMessage());
+		}
+        return null;
+    }
     @Override
     public Entity getRoot() throws LexicalSemanticResourceException {
         Map<String,String> rootLexemes = new HashMap<String,String>();
