@@ -20,7 +20,7 @@
   <parent>
     <artifactId>dkpro-parent-pom</artifactId>
     <groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-    <version>2</version>
+    <version>10</version>
   </parent>
   <groupId>de.tudarmstadt.ukp.dkpro.lexsemresource</groupId>
   <artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource-asl</artifactId>
