@@ -22,6 +22,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -401,10 +402,9 @@ public class WordNetResourceTest
 		semRelMap.put(SemanticRelation.hyponymy, 3);
 
 		Entity e = new Entity("warm", PoS.adj, "2530861");
-		String gloss = new String("cool warm cordial hearty"); // zhu
-		String pgloss = wordnet.getPseudoGloss(e, lexRels, semRelMap);
+		Set<String> gloss = new HashSet<String>(Arrays.asList("cool", "warm", "cordial", "hearty"));
+		Set<String> pgloss = new HashSet<String>(Arrays.asList(wordnet.getPseudoGloss(e, lexRels, semRelMap).split(" ")));
 		assertEquals(gloss, pgloss);
-		// System.exit(1); //zhu
 	}
 
 	// this tests some error I found when trying to find entities returned as related to the string
