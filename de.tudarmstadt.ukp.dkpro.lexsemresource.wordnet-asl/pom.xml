@@ -20,7 +20,7 @@
   <parent>
     <artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource-asl</artifactId>
     <groupId>de.tudarmstadt.ukp.dkpro.lexsemresource</groupId>
-    <version>0.8.1</version>
+    <version>0.8.2-SNAPSHOT</version>
   </parent>
   <artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource.wordnet-asl</artifactId>
   <dependencies>
