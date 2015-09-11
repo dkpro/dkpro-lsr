@@ -223,4 +223,5 @@
           </build>
       </profile>
   </profiles>
+  <description>DKPro LSR (Lexical Semantic Resources) is a unified API for several lexical-semantic resources. It currently contains access to GermaNet, OpenThesaurus, Wikipedia, Wiktionary, and WordNet.</description>
 </project>
