@@ -1,5 +1,5 @@
 <!--
-    Copyright 2012
+    Copyright 2015
     Ubiquitous Knowledge Processing (UKP) Lab
     Technische Universität Darmstadt
 
@@ -26,16 +26,16 @@
   <artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource-asl</artifactId>
   <version>0.8.1-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>DKPro Lexical Semantic Resource</name>
-  <url>http://code.google.com/p/dkpro-lsr-asl/</url>
+  <name>DKPro LSR</name>
+  <url>https://github.com/dkpro/dkpro-lsr</url>
   <issueManagement>
-    <system>Google Code</system>
-    <url>http://code.google.com/p/dkpro-lsr-asl/issues/list</url>
+    <system>GitHub</system>
+    <url>https://github.com/dkpro/dkpro-lsr/issues</url>
   </issueManagement>
   <scm>
-    <connection>http://dkpro-lsr.googlecode.com/svn/trunk/de.tudarmstadt.ukp.dkpro.lexsemresource</connection>
-    <developerConnection>scm:svn:https://dkpro-lsr.googlecode.com/svn/trunk/de.tudarmstadt.ukp.dkpro.lexsemresource/</developerConnection>
-    <url>http://code.google.com/p/dkpro-lsr/source/browse/#svn/trunk/de.tudarmstadt.ukp.dkpro.lexsemresource</url>
+    <connection>scm:git:https://github.com/dkpro/dkpro-lsr</connection>
+    <developerConnection>scm:git:https://github.com/dkpro/dkpro-lsr</developerConnection>
+    <url>https://github.com/dkpro/dkpro-lsr</url>
   </scm>
   <repositories>
       <repository>
