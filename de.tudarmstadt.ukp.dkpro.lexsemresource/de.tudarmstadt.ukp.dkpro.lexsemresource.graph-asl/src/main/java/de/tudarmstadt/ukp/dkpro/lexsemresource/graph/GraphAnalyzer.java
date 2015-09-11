@@ -60,7 +60,7 @@ public class GraphAnalyzer {
 
     /**
      * Check whether the graph contains a certain vertex.
-     * @param The vertex to check in Entity representation.
+     * @param vertex The vertex to check in Entity representation.
      * @return True if vertex contained in graph; false otherwise
      */
     public boolean containsVertex(Entity vertex) {
@@ -69,8 +69,8 @@ public class GraphAnalyzer {
 
     /**
      * Check whether the graph contains an edge between two certain vertices.
-     * @param The source vertex in Entity representation.
-     * @param The target vertex in Entity representation.
+     * @param source The source vertex in Entity representation.
+     * @param target The target vertex in Entity representation.
      * @return True if edge contained in graph; false otherwise
      */
     public boolean containsEdge(Entity source, Entity target) {
@@ -79,7 +79,7 @@ public class GraphAnalyzer {
 
     /**
      * Get the children vertices.
-     * @param The vertex in Entity representation.
+     * @param vertex The vertex in Entity representation.
      * @return A set of child vertices of the given vertex in Entity representation
      */
     public Set<Entity> getChildren(Entity vertex) {
@@ -88,7 +88,7 @@ public class GraphAnalyzer {
 
     /**
      * Get the parent vertices.
-     * @param The vertex in Entity representation.
+     * @param vertex The vertex in Entity representation.
      * @return A set of parent vertices of the given vertex in Entity representation
      */
     public Set<Entity> getParents(Entity vertex) {
@@ -97,7 +97,7 @@ public class GraphAnalyzer {
 
     /**
      * Get the neighbor vertices as the union of children and parents
-     * @param The vertex in Entity representation.
+     * @param vertex The vertex in Entity representation.
      * @return A set of neighbor vertices of the given vertex in Entity representation
      */
     public Set<Entity> getNeighbors(Entity vertex) {
@@ -106,7 +106,7 @@ public class GraphAnalyzer {
 
     /**
      * Get the indegree of the vertex, i.e. the number of its parents
-     * @param The vertex in Entity representation.
+     * @param vertex The vertex in Entity representation.
      */
     public int getInDegree(Entity vertex) {
     	return entityGraph.getInDegree(vertex);
@@ -114,7 +114,7 @@ public class GraphAnalyzer {
 
     /**
      * Get the outdegree of the vertex, i.e. the number of its children
-     * @param The vertex in Entity representation.
+     * @param vertex The vertex in Entity representation.
      */
     public int getOutDegree(Entity vertex) {
     	return entityGraph.getOutDegree(vertex);
@@ -122,7 +122,7 @@ public class GraphAnalyzer {
 
     /**
      * Get the degree of the vertex, i.e. the number of its neighbors
-     * @param The vertex in Entity representation.
+     * @param vertex The vertex in Entity representation.
      */
     public int getDegree(Entity vertex) {
     	return entityGraph.getDegree(vertex);
@@ -207,8 +207,8 @@ public class GraphAnalyzer {
     /**
      * Check whether the graph contains a symmetric link between two certain vertices,
      * i.e., both a link from source to target and a link from target to source
-     * @param The source vertex in Entity representation.
-     * @param The target vertex in Entity representation.
+     * @param source The source vertex in Entity representation.
+     * @param target The target vertex in Entity representation.
      * @return True if there is a symmetric link; false otherwise
      */
 	public boolean isSymmetricLink(Entity source, Entity target) {

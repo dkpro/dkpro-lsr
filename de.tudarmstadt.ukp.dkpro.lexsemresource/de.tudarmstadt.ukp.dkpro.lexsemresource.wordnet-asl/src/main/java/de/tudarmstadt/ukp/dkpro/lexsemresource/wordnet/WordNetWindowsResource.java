@@ -38,6 +38,7 @@ import de.tudarmstadt.ukp.dkpro.lexsemresource.wordnet.util.WordNetWindowsEntity
 import de.tudarmstadt.ukp.dkpro.lexsemresource.wordnet.util.WordNetWindowsUtils;
 import edu.mit.jwi.Dictionary;
 import edu.mit.jwi.item.IIndexWord;
+import edu.mit.jwi.item.ISynset;
 import edu.mit.jwi.item.ISynsetID;
 import edu.mit.jwi.item.POS;
 import edu.mit.jwi.item.Pointer;
@@ -78,7 +79,8 @@ public class WordNetWindowsResource extends AbstractResource {
 	}
 
 
-	public boolean containsEntity(Entity entity) throws LexicalSemanticResourceException {
+	@Override
+    public boolean containsEntity(Entity entity) throws LexicalSemanticResourceException {
 		Set<Synset> synsets = WordNetWindowsUtils.entityToSynsets(dict, entity, isCaseSensitive);
 		if (synsets.size() == 0) {
 		    return false;
@@ -89,7 +91,8 @@ public class WordNetWindowsResource extends AbstractResource {
 	}
 
 
-	public boolean containsLexeme(String lexeme) throws LexicalSemanticResourceException {
+	@Override
+    public boolean containsLexeme(String lexeme) throws LexicalSemanticResourceException {
 		// iterate over all POS to check if there is an index word with given lexeme
 		for (POS pos : POS.values()) {
 			IIndexWord indexWord = dict.getIndexWord(lexeme, pos);
@@ -113,14 +116,16 @@ public class WordNetWindowsResource extends AbstractResource {
 		return false;
 	}
 
-	public Iterable<Entity> getEntities() {
+	@Override
+    public Iterable<Entity> getEntities() {
 		return new WordNetWindowsEntityIterable(dict);
 	}
 
 
 
 
-	public Set<Entity> getChildren(Entity entity) throws LexicalSemanticResourceException  {
+	@Override
+    public Set<Entity> getChildren(Entity entity) throws LexicalSemanticResourceException  {
 		// deliberately used a set to collect results to allow other relation types to be added
 		Set<Entity> children = new HashSet<Entity>();
 		children.addAll(getRelatedEntities(entity, SemanticRelation.hyponymy));
@@ -128,17 +133,20 @@ public class WordNetWindowsResource extends AbstractResource {
 	}
 
 
-	public Set<Entity> getEntity(String lexeme) throws LexicalSemanticResourceException {
+	@Override
+    public Set<Entity> getEntity(String lexeme) throws LexicalSemanticResourceException {
 		Set<Synset> synsets = WordNetWindowsUtils.toSynset(dict, lexeme, isCaseSensitive);
 		return WordNetWindowsUtils.synsetsToEntities(synsets);
 	}
 
-	public Set<Entity> getEntity(String lexeme, PoS pos) throws LexicalSemanticResourceException {
+	@Override
+    public Set<Entity> getEntity(String lexeme, PoS pos) throws LexicalSemanticResourceException {
 		Set<Synset> synsets = WordNetWindowsUtils.toSynset(dict, lexeme, pos, isCaseSensitive);
 		return WordNetWindowsUtils.synsetsToEntities(synsets);
 	}
 
-	public Set<Entity> getEntity(String lexeme, PoS pos, String sense) throws LexicalSemanticResourceException {
+	@Override
+    public Set<Entity> getEntity(String lexeme, PoS pos, String sense) throws LexicalSemanticResourceException {
 		Set<Entity> entities = new HashSet<Entity>();
 		Entity e = WordNetWindowsUtils.getExactEntity(dict, lexeme, pos, sense, isCaseSensitive);
 		if (e != null) {
@@ -147,7 +155,8 @@ public class WordNetWindowsResource extends AbstractResource {
 		return entities;
 	}
 
-	public String getGloss(Entity entity) throws LexicalSemanticResourceException  {
+	@Override
+    public String getGloss(Entity entity) throws LexicalSemanticResourceException  {
 		StringBuilder sb = new StringBuilder();
 		Set<Synset> synsets = WordNetWindowsUtils.entityToSynsets(dict, entity, isCaseSensitive);
 		for (Synset synset : synsets) {
@@ -158,13 +167,14 @@ public class WordNetWindowsResource extends AbstractResource {
 	}
 
 	// TODO is there a more efficient way?
-	public int getNumberOfEntities() throws LexicalSemanticResourceException  {
+	@Override
+    public int getNumberOfEntities() throws LexicalSemanticResourceException  {
 		if (this.numberOfEntities < 0) {
 			int i=0;
-			Iterator adjIter = dict.getSynsetIterator(POS.ADJECTIVE);
-			Iterator advIter  = dict.getSynsetIterator(POS.ADVERB);
-			Iterator nounIter = dict.getSynsetIterator(POS.NOUN);
-			Iterator verbIter = dict.getSynsetIterator(POS.VERB);
+			Iterator<ISynset> adjIter = dict.getSynsetIterator(POS.ADJECTIVE);
+			Iterator<ISynset> advIter  = dict.getSynsetIterator(POS.ADVERB);
+			Iterator<ISynset> nounIter = dict.getSynsetIterator(POS.NOUN);
+			Iterator<ISynset> verbIter = dict.getSynsetIterator(POS.VERB);
 
 			while(adjIter.hasNext()) {
 				i++;
@@ -187,14 +197,16 @@ public class WordNetWindowsResource extends AbstractResource {
 		return numberOfEntities;
 	}
 
-	public Set<Entity> getParents(Entity entity) throws LexicalSemanticResourceException {
+	@Override
+    public Set<Entity> getParents(Entity entity) throws LexicalSemanticResourceException {
 		// deliberately used a set to collect results to allow other relation types to be added
 		Set<Entity> parents = new HashSet<Entity>();
 		parents.addAll(getRelatedEntities(entity, SemanticRelation.hypernymy));
 		return parents;
 	}
 
-	public Set<Entity> getRelatedEntities(Entity entity, SemanticRelation semanticRelation) throws LexicalSemanticResourceException  {
+	@Override
+    public Set<Entity> getRelatedEntities(Entity entity, SemanticRelation semanticRelation) throws LexicalSemanticResourceException  {
 		Set<Entity> relatedEntities = new HashSet<Entity>();
 		Set<Synset> synsets = WordNetWindowsUtils.entityToSynsets(dict, entity, isCaseSensitive);
 
@@ -235,11 +247,13 @@ public class WordNetWindowsResource extends AbstractResource {
 		return nodeList;
 	}
 
-	public String getResourceName() {
+	@Override
+    public String getResourceName() {
 		return RESOURCE_NAME;
 	}
 
-	public String getResourceVersion() {
+	@Override
+    public String getResourceVersion() {
 		return dict.getVersion().toString();
 	}
 
@@ -266,12 +280,14 @@ public class WordNetWindowsResource extends AbstractResource {
         }
     }
 
-	public Set<String> getRelatedLexemes(String lexeme, PoS pos, String sense,
+	@Override
+    public Set<String> getRelatedLexemes(String lexeme, PoS pos, String sense,
 			LexicalRelation lexicalRelation) {
 		throw new UnsupportedOperationException();
 	}
 
-	public int getShortestPathLength(Entity firstEntity, Entity secondEntity) {
+	@Override
+    public int getShortestPathLength(Entity firstEntity, Entity secondEntity) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -1264,7 +1264,7 @@ public class EntityGraphJUNG
 	 * on edge betweenness. [Note: The betweenness of an edge measures the
 	 * extent to which that edge lies along shortest paths between all pairs of
 	 * nodes.] Edges which are least central to communities are progressively
-	 * removed until the communities have been adequately seperated.
+	 * removed until the communities have been adequately separated.
 	 *
 	 * @param ratioEdgesToRemove
 	 *            The ratio of the total number of edges that we want to remove.

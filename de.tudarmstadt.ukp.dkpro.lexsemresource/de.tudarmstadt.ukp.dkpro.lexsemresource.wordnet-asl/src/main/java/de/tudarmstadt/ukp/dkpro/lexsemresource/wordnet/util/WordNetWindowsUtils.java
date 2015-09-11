@@ -36,7 +36,7 @@ import edu.mit.jwi.item.Synset;
 
 public class WordNetWindowsUtils {
     /**
-     * @param synset A set of WordNet synsets.
+     * @param synsets A set of WordNet synsets.
      * @return a set of Entities from a set of synsets.
      */
     public static Set<Entity> synsetsToEntities(Set<Synset> synsets) {
@@ -47,7 +47,7 @@ public class WordNetWindowsUtils {
         return entities;
     }
 
-    
+
     /**
      * @param synset A WordNet synset.
      * @return Creates an Entity from a synset.
@@ -57,13 +57,13 @@ public class WordNetWindowsUtils {
             return null;
         }
         return new Entity(getSynsetLexemes(synset), mapPos(synset.getPOS()));
-    }    
-    
+    }
+
     public static Map<String,String> getSynsetLexemes(Synset synset) {
-        Map<String,String> result = new HashMap<String,String>();    
+        Map<String,String> result = new HashMap<String,String>();
 
         long sense = synset.getOffset();
-        
+
         List<IWord> words = synset.getWords();
         for (IWord word : words) {
             String lexeme = word.getLemma();
@@ -73,9 +73,9 @@ public class WordNetWindowsUtils {
         return result;
     }
 
-    
-    
-    // remove some suffixes that might be added to the synset representation 
+
+
+    // remove some suffixes that might be added to the synset representation
     // due to errors in WordNet (?)
     private static String cleanLexeme(String lexeme) {
         if (lexeme.endsWith("(n)") || lexeme.endsWith("(a)") || lexeme.endsWith("(v)") || lexeme.endsWith("(p)")) {
@@ -86,7 +86,7 @@ public class WordNetWindowsUtils {
         }
         return lexeme;
     }
-    
+
     public static PoS mapPos(POS pos) {
         if (pos.equals(POS.NOUN)) {
             return PoS.n;
@@ -104,7 +104,7 @@ public class WordNetWindowsUtils {
             return PoS.unk;
         }
     }
-    
+
     public static Set<POS> mapPos(PoS lsrPos) {
         Set<POS> pos = new HashSet<POS>();
         if (lsrPos.equals(PoS.n)) {
@@ -120,14 +120,14 @@ public class WordNetWindowsUtils {
             pos.add(POS.ADVERB);
         }
         else {
-            // defaults to noun  
+            // defaults to noun
             pos.add(POS.NOUN);
         }
         return pos;
     }
-    
-    
-    
+
+
+
     public static Set<Synset> toSynset(Dictionary dict, String lexeme, boolean isCaseSensitive) throws LexicalSemanticResourceException {
 
             Set<IIndexWord> indexWords = new HashSet<IIndexWord>();
@@ -144,11 +144,11 @@ public class WordNetWindowsUtils {
 	            		}
 	            	}
             	}
-            }            
-            
-            
+            }
+
+
             for (IIndexWord indexWord : indexWords) {
-                if (indexWord != null) {    
+                if (indexWord != null) {
                     List<IWordID> iwordIDs = indexWord.getWordIDs();
                     for (IWordID iwordID : iwordIDs) {
                         resultsSynsets.add((Synset) dict.getSynset(iwordID.getSynsetID()));
@@ -157,10 +157,10 @@ public class WordNetWindowsUtils {
             }
             return resultsSynsets;
     }
-    
-    
+
+
     public static Set<Synset> toSynset(Dictionary dict, String lexeme, PoS pos, boolean isCaseSensitive) {
-        
+
         Set<IndexWord> indexWords = new HashSet<IndexWord>();
         for (POS wnPOS : mapPos(pos)) {
         	IndexWord indexWord = (IndexWord)dict.getIndexWord(lexeme, wnPOS);
@@ -177,7 +177,7 @@ public class WordNetWindowsUtils {
         }
         Set<Synset> resultsSynsets = new HashSet<Synset>();
         for (IndexWord indexWord : indexWords) {
-            if (indexWord != null) {    
+            if (indexWord != null) {
                 List<IWordID> iwordIDs = indexWord.getWordIDs();
                 for (IWordID iwordID : iwordIDs) {
                     resultsSynsets.add((Synset) dict.getSynset(iwordID.getSynsetID()));
@@ -186,14 +186,14 @@ public class WordNetWindowsUtils {
         }
         return resultsSynsets;
     }
-    
-    
-    
+
+
+
     public static Synset toSynset(Dictionary dict, String lexeme, PoS pos, String sense, boolean isCaseSensitive) {
         Set<Synset> possibleSynsets = toSynset(dict, lexeme, pos, isCaseSensitive);
         for (Synset synset : possibleSynsets) {
             Integer senseNumber = synset.getOffset();
-            
+
             // if the sense number matches, then we have found the correct synset
             if (senseNumber.toString().equals(sense)) {
                 return synset;
@@ -202,19 +202,19 @@ public class WordNetWindowsUtils {
         // if we get here, there is no matching synset
         return null;
     }
-    
-    
-    
+
+
+
     public static Set<Synset> entityToSynsets(Dictionary dict, Entity entity, boolean isCaseSensitive) throws LexicalSemanticResourceException {
         Set<Synset> results = new HashSet<Synset>();
-        
+
         Set<String> lexemes = entity.getLexemes();
         PoS pos = entity.getPos();
         String sense = entity.getSense(entity.getFirstLexeme());
         Long senseNumber = Long.MIN_VALUE;
         if (sense != Entity.UNKNOWN_SENSE) {
             try {
-                senseNumber = new Long(sense);    
+                senseNumber = new Long(sense);
             } catch (NumberFormatException e) {
                 throw new LexicalSemanticResourceException(e);
             }
@@ -231,7 +231,7 @@ public class WordNetWindowsUtils {
         else if (pos.equals(Entity.UNKNOWN_POS)) {
             // get the synsets for each lexeme
             for (String lexeme : lexemes) {
-                Set<Synset> synsets = toSynset(dict, lexeme, isCaseSensitive);  
+                Set<Synset> synsets = toSynset(dict, lexeme, isCaseSensitive);
                 if (synsets != null) {
                     results.addAll(synsets);
                 }
@@ -246,10 +246,10 @@ public class WordNetWindowsUtils {
                 }
             }
         }
-        
+
         return results;
     }
-    
+
     // a wordnet synset is unambiguously indicated by a pos and a sense number
     public static Entity getExactEntity(Dictionary dict, String lexeme, PoS pos, String sense, boolean isCaseSensitive) throws LexicalSemanticResourceException {
         return synsetToEntity(toSynset(dict, lexeme, pos, sense, isCaseSensitive));

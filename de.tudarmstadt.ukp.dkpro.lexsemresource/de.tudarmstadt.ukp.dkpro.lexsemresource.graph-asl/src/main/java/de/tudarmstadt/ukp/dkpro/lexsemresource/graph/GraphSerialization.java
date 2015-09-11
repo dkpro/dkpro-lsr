@@ -42,14 +42,14 @@ public final class GraphSerialization {
      *
      */
     private GraphSerialization() {}
-    
 
-    
+
+
     /**
      * Serializes the given DirectedGraph object to the given location.
      * @param graph
      * @param location
-     * @throws IOException 
+     * @throws IOException
      */
     public static void saveGraph(DirectedGraph<Entity,DefaultEdge> graph, String location) throws IOException {
         File file = new File(location);
@@ -62,9 +62,9 @@ public final class GraphSerialization {
 
     /**
      * Serializes the given DirectedGraph object to the given location.
-     * @param graph
-     * @param location
-     * @throws IOException 
+     * @param graph The graph to serialize
+     * @param file Output file for serialization
+     * @throws IOException
      */
     public static void saveGraph(DirectedGraph<Entity,DefaultEdge> graph, File file) throws IOException{
         SerializableDirectedGraph serialGraph = new SerializableDirectedGraph(graph);
@@ -74,18 +74,18 @@ public final class GraphSerialization {
         out = new ObjectOutputStream(fos);
         out.writeObject(serialGraph);
         out.close();
-        
+
     }
-    
+
     /**
      * Deserializes a SerializableDirectedGraph object that is stored in the given<br>
      * location. This method returns the DirectedGraph object, that is wrapped in <br>
      * the SerializableDirectedGraph.
      * @param location
      * @return The DirectedGraph object, that is wrapped in the SerializableDirectedGraph.
-     * @throws IOException 
-     * @throws ClassNotFoundException 
-     * @throws ClassNotFoundException 
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * @throws ClassNotFoundException
      */
     public static DirectedGraph<Entity, DefaultEdge> loadGraph(String location) throws IOException, ClassNotFoundException  {
         File file = new File(location);
@@ -94,15 +94,15 @@ public final class GraphSerialization {
         }
         return GraphSerialization.loadGraph(file);
     }
- 
+
         /**
      * Deserializes a SerializableDirectedGraph object that is stored in the given<br>
      * location. This method returns the DirectedGraph object, that is wrapped in <br>
      * the SerializableDirectedGraph.
-     * @param location
+     * @param file File from which to load the graph
      * @return The DirectedGraph object, that is wrapped in the SerializableDirectedGraph.
-     * @throws IOException 
-     * @throws ClassNotFoundException 
+     * @throws IOException
+     * @throws ClassNotFoundException
      */
     public static DirectedGraph<Entity, DefaultEdge> loadGraph(File file) throws IOException, ClassNotFoundException{
         SerializableDirectedGraph serialGraph = null;

@@ -174,10 +174,10 @@ public class WordNetResource extends AbstractResource {
         if (this.numberOfEntities < 0) {
             int i=0;
             try {
-                Iterator adjIter = dict.getSynsetIterator(POS.ADJECTIVE);
-                Iterator advIter  = dict.getSynsetIterator(POS.ADVERB);
-                Iterator nounIter = dict.getSynsetIterator(POS.NOUN);
-                Iterator verbIter = dict.getSynsetIterator(POS.VERB);
+                Iterator<Synset> adjIter = dict.getSynsetIterator(POS.ADJECTIVE);
+                Iterator<Synset> advIter  = dict.getSynsetIterator(POS.ADVERB);
+                Iterator<Synset> nounIter = dict.getSynsetIterator(POS.NOUN);
+                Iterator<Synset> verbIter = dict.getSynsetIterator(POS.VERB);
 
                 while(adjIter.hasNext()) {
                     i++;

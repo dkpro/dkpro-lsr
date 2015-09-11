@@ -22,9 +22,7 @@
     <groupId>de.tudarmstadt.ukp.dkpro.lexsemresource</groupId>
     <version>0.8.1-SNAPSHOT</version>
   </parent>
-  <groupId>de.tudarmstadt.ukp.dkpro.lexsemresource</groupId>
   <artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource.germanet-gpl</artifactId>
-  <version>0.8.1-SNAPSHOT</version>
   <dependencies>
   	<dependency>
   		<groupId>de.tudarmstadt.ukp.dkpro.lexsemresource</groupId>
@@ -42,7 +40,6 @@
     <dependency>
   		<groupId>de.tudarmstadt.ukp.dkpro.lexsemresource</groupId>
   		<artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource.graph-asl</artifactId>
-  		<version>0.8.1-SNAPSHOT</version>
   		<scope>test</scope>
   	</dependency>
   </dependencies>

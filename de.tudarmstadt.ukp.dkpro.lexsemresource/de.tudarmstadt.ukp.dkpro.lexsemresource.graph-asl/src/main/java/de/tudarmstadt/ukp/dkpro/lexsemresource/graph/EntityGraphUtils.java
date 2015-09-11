@@ -28,7 +28,7 @@ public class EntityGraphUtils {
 
     /**
      * Serialize a Map.
-     * 
+     *
      * @param map The map to serialize.
      * @param file The file for saving the map.
      */
@@ -47,7 +47,6 @@ public class EntityGraphUtils {
      * Deserialize a map
      * @param file The file with the map.
      */
-    @SuppressWarnings("unchecked")
     public static Map deserializeMap(File file) {
         Map<?,?> map;
         try {

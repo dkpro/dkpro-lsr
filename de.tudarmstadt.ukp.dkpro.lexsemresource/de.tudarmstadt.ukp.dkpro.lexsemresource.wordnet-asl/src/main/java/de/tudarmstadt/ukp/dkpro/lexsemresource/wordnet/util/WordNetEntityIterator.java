@@ -26,13 +26,12 @@ import net.sf.extjwnl.dictionary.Dictionary;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.Entity;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.LexicalSemanticEntityIterator;
 
-@SuppressWarnings("unchecked")
 public class WordNetEntityIterator extends LexicalSemanticEntityIterator {
 
-    Iterator adjIter;
-    Iterator advIter;
-    Iterator nounIter;
-    Iterator verbIter;
+    Iterator<Synset> adjIter;
+    Iterator<Synset> advIter;
+    Iterator<Synset> nounIter;
+    Iterator<Synset> verbIter;
 
     public WordNetEntityIterator(Dictionary dict) {
         try {
@@ -58,16 +57,16 @@ public class WordNetEntityIterator extends LexicalSemanticEntityIterator {
     @Override
     public Entity next() {
         if (adjIter.hasNext()) {
-            return WordNetUtils.synsetToEntity((Synset) adjIter.next());
+            return WordNetUtils.synsetToEntity(adjIter.next());
         }
         else if (advIter.hasNext()) {
-            return WordNetUtils.synsetToEntity((Synset) advIter.next());
+            return WordNetUtils.synsetToEntity(advIter.next());
         }
         else if (nounIter.hasNext()) {
-            return WordNetUtils.synsetToEntity((Synset) nounIter.next());
+            return WordNetUtils.synsetToEntity(nounIter.next());
         }
         else if (verbIter.hasNext()) {
-            return WordNetUtils.synsetToEntity((Synset) verbIter.next());
+            return WordNetUtils.synsetToEntity(verbIter.next());
         }
         else {
             return null;

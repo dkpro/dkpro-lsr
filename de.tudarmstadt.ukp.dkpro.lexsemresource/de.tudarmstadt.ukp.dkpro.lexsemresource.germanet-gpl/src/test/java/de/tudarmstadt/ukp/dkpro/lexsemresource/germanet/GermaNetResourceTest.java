@@ -32,8 +32,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import de.tudarmstadt.ukp.dkpro.lexsemresource.Entity;
-import de.tudarmstadt.ukp.dkpro.lexsemresource.LexicalSemanticResource;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.Entity.PoS;
+import de.tudarmstadt.ukp.dkpro.lexsemresource.LexicalSemanticResource;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.LexicalSemanticResource.LexicalRelation;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.core.ResourceFactory;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.exception.LexicalSemanticResourceException;
@@ -62,7 +62,7 @@ public class GermaNetResourceTest {
 		        germaNet = ResourceFactory.getInstance().get("germanet7", "de");
             }
 			if (germaNetCaseInsensitive == null) {
-			    germaNetCaseInsensitive = ResourceFactory.getInstance().get("germanet7ci", "de"); 
+			    germaNetCaseInsensitive = ResourceFactory.getInstance().get("germanet7ci", "de");
 			}
 		} catch(Exception e){
             e.printStackTrace();
@@ -216,7 +216,7 @@ public class GermaNetResourceTest {
 
     @Test
     public void testGetEntities() throws LexicalSemanticResourceException {
-        int i=0;
+//        int i=0;
         for (Entity entity : germaNetCaseInsensitive.getEntities()) {
 //            Set<String> testLexemes = entity.getLexemes();
 //            for (String t : testLexemes) {
@@ -224,17 +224,17 @@ public class GermaNetResourceTest {
 //                System.out.println(entity.getPos());
 //            }
             assertTrue(entity.toString(), germaNetCaseInsensitive.containsEntity(entity));
-            i++;
+//            i++;
         }
 
         for (Entity entity : germaNet.getEntities()) {
-            Set<String> testLexemes = entity.getLexemes();
+//            Set<String> testLexemes = entity.getLexemes();
 //            for (String t : testLexemes) {
 //                System.out.println(t + " " + entity.getSense(t));
 //                System.out.println(entity.getPos());
 //            }
             assertTrue(entity.toString(), germaNet.containsEntity(entity));
-            i++;
+//            i++;
         }
     }
 

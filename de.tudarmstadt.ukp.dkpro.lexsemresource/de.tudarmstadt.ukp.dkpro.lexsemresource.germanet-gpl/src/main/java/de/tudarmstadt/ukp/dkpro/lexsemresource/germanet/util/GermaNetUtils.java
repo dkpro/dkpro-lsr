@@ -26,7 +26,7 @@ import de.tuebingen.uni.sfs.germanet.api.WordCategory;
 public class GermaNetUtils {
 
     /**
-     * @param synset A set of GermaNet synsets.
+     * @param synsets A set of GermaNet synsets.
      * @return Creates a set of Entities from a set of synsets.
      */
     public static Set<Entity> synsetsToEntities(Set<Synset> synsets) {
@@ -47,32 +47,32 @@ public class GermaNetUtils {
 
     public static Set<Synset> entityToSynsets(GermaNet gn, Entity entity) {
         Set<Synset> synsets = new HashSet<Synset>();
-        
+
         Set<String> lexemes = entity.getLexemes();
         PoS lsrPos = entity.getPos();
-        
+
         if (lsrPos.equals(Entity.UNKNOWN_POS)) {
             // get the synsets for each lexeme
-            for (String lexeme : lexemes) { 
-                synsets.addAll( gn.getSynsets(lexeme) );                              	
+            for (String lexeme : lexemes) {
+                synsets.addAll( gn.getSynsets(lexeme) );
             }
         }
         else {
             // get the synsets for each lexeme
-            for (String lexeme : lexemes) {            	
+            for (String lexeme : lexemes) {
                 synsets.addAll( gn.getSynsets(lexeme, GermaNetUtils.mapPos(lsrPos)) );
             }
-        }        
+        }
         return synsets;
     }
-    
+
     public static Map<String,String> getSynsetLexemes(Synset synset) {
-        Map<String,String> result = new HashMap<String,String>();    
-        
+        Map<String,String> result = new HashMap<String,String>();
+
         if (synset == null) {
             return null;
         }
-        
+
         List<LexUnit> lexUnits= synset.getLexUnits();
         for (LexUnit lexUnit : lexUnits) {
             result.put(lexUnit.getOrthForm(), Integer.toString(lexUnit.getSense()));

@@ -462,12 +462,12 @@ public class EntityGraphJGraphT
 
 		// this can be done still more efficiently if i put the nodes in a list and remove from the
 		// list current node as well as its children after each loop
-		int progress = 0;
+//		int progress = 0;
 
 		Set<Entity> nodes = directedGraph.vertexSet();
 		for (Entity source : nodes) {
 			for (Entity target : getChildren(source)) {
-				progress++;
+//				progress++;
 				// ApiUtilities.printProgressInfo(progress, max, 100,
 				// ApiUtilities.ProgressInfoMode.TEXT, "Counting symmetric links");
 

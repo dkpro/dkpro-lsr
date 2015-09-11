@@ -36,7 +36,7 @@ import de.tudarmstadt.ukp.dkpro.lexsemresource.exception.LexicalSemanticResource
 public class WordNetUtils
 {
     /**
-     * @param synset A set of WordNet synsets.
+     * @param synsets A set of WordNet synsets.
      * @return Creates a set of Entities from a set of synsets.
      */
 	public static Set<Entity> synsetsToEntities(Set<Synset> synsets)

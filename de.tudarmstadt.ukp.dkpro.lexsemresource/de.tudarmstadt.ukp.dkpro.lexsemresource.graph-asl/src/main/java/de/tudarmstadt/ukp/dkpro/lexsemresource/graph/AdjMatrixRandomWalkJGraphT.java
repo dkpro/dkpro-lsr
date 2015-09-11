@@ -29,8 +29,8 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
 import de.tudarmstadt.ukp.dkpro.lexsemresource.Entity;
-import de.tudarmstadt.ukp.dkpro.lexsemresource.LexicalSemanticResource;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.Entity.PoS;
+import de.tudarmstadt.ukp.dkpro.lexsemresource.LexicalSemanticResource;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.exception.LexicalSemanticResourceException;
 
 /**
@@ -50,9 +50,9 @@ import de.tudarmstadt.ukp.dkpro.lexsemresource.exception.LexicalSemanticResource
 
 public class AdjMatrixRandomWalkJGraphT {
 
-	private Log logger = LogFactory.getLog(getClass());
+	private final Log logger = LogFactory.getLog(getClass());
 	public DirectedGraph<Entity,DefaultEdge> entityGraph;
-	private LexicalSemanticResource lexSemResource;
+	private final LexicalSemanticResource lexSemResource;
 	PersistentAdjacencyMatrix adjMatrix;
 	private Entity startEntity;
 	int resourceSize = 0;

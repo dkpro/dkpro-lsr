@@ -234,7 +234,7 @@ public interface LexicalSemanticResource {
     /**
      * Some resources have distinct roots for e.g. the taxonomy of nouns or the taxonomy of adjectives.
      *
-     * @param The PoS for which the root should be returned.
+     * @param pos The PoS for which the root should be returned.
      * @return The root entity of the resource or null, if the resource contains no explicit taxonomy with a root.
      * @throws LexicalSemanticResourceException
      * @throws UnsupportedOperationException
@@ -275,14 +275,12 @@ public interface LexicalSemanticResource {
     /**
      * Sets whether the resource should be case sensitive, or not.
      * @param isCaseSensitive True, if the resource should be case sensitive, false otherwise.
-     * @throws LexicalSemanticResourceException
      * @throws UnsupportedOperationException
      */
     public void setIsCaseSensitive(boolean isCaseSensitive);
 
     /**
      * @return Returns whether the resource is case sensitive.
-     * @throws LexicalSemanticResourceException
      * @throws UnsupportedOperationException
      */
     public boolean getIsCaseSensitive();
