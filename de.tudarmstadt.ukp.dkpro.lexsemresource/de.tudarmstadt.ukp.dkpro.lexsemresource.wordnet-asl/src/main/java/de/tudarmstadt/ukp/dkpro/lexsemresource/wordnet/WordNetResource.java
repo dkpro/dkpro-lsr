@@ -26,20 +26,20 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.didion.jwnl.JWNL;
-import net.didion.jwnl.JWNLException;
-import net.didion.jwnl.JWNL.Version;
-import net.didion.jwnl.data.IndexWord;
-import net.didion.jwnl.data.POS;
-import net.didion.jwnl.data.PointerUtils;
-import net.didion.jwnl.data.Synset;
-import net.didion.jwnl.data.Word;
-import net.didion.jwnl.data.list.PointerTargetNode;
-import net.didion.jwnl.data.list.PointerTargetNodeList;
-import net.didion.jwnl.dictionary.Dictionary;
+import net.sf.extjwnl.JWNLException;
+import net.sf.extjwnl.data.IndexWord;
+import net.sf.extjwnl.data.POS;
+import net.sf.extjwnl.data.PointerUtils;
+import net.sf.extjwnl.data.Synset;
+import net.sf.extjwnl.data.Word;
+import net.sf.extjwnl.data.list.PointerTargetNode;
+import net.sf.extjwnl.data.list.PointerTargetNodeList;
+import net.sf.extjwnl.dictionary.Dictionary;
+import net.sf.extjwnl.dictionary.Dictionary.Version;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -57,7 +57,7 @@ public class WordNetResource extends AbstractResource {
     private static final String RESOURCE_NAME = "WordNet";
 
     private Dictionary dict;
-    private final PointerUtils pUtils = PointerUtils.getInstance();
+//    private final PointerUtils pUtils = PointerUtils.getInstance();
     private Version v;
 
     private int numberOfEntities = -1;
@@ -79,9 +79,8 @@ public class WordNetResource extends AbstractResource {
             		is = new FileInputStream(wordNetPropertiesFile);
         		}
         	}
-            JWNL.initialize(is);
-            this.dict = Dictionary.getInstance();
-            this.v = JWNL.getVersion();
+            this.dict = Dictionary.getInstance(is);
+            this.v = dict.getVersion();
             setIsCaseSensitive(isCaseSensitive); //zhu
         } catch (IOException e) {
             logger.info("Could not access WordNet properties file: " + wordNetPropertiesFile);
@@ -279,7 +278,7 @@ public class WordNetResource extends AbstractResource {
                     for (Object node : nodeList) {
                         PointerTargetNode ptNode = (PointerTargetNode) (node);
                         Synset nodeSynset = ptNode.getSynset();
-                        Word[] synsetWords = nodeSynset.getWords();
+                        List<Word> synsetWords = nodeSynset.getWords();
                         for (Word synsetWord : synsetWords) {
                             if (!synsetWord.getLemma().equals(lexeme)) {
                                 relatedLexemes.add(synsetWord.getLemma());
@@ -292,7 +291,7 @@ public class WordNetResource extends AbstractResource {
                 // The PointerUtils method of JWNL does not get intra synset lexemes as synonyms. Thus, we have to add it manually.
                 if (lexicalRelation.equals(LexicalRelation.synonymy)) {
                     // add the other lexemes from the synset
-                    Word[] directSynonymWords = synset.getWords();
+                    List<Word> directSynonymWords = synset.getWords();
                     for (Word synsetWord : directSynonymWords) {
                         if (!synsetWord.getLemma().equals(lexeme)) {
                             relatedLexemes.add(synsetWord.getLemma());
@@ -332,19 +331,19 @@ public class WordNetResource extends AbstractResource {
     private PointerTargetNodeList getNodeListByRelation(Synset synset, SemanticRelation relationType) throws LexicalSemanticResourceException {
         try {
             if (relationType.equals(SemanticRelation.holonymy)) {
-                return pUtils.getHolonyms(synset);
+                return PointerUtils.getHolonyms(synset);
             }
             else if (relationType.equals(SemanticRelation.hypernymy)) {
-                return pUtils.getDirectHypernyms(synset);
+                return PointerUtils.getDirectHypernyms(synset);
             }
             else if (relationType.equals(SemanticRelation.hyponymy)) {
-                return pUtils.getDirectHyponyms(synset);
+                return PointerUtils.getDirectHyponyms(synset);
             }
             else if (relationType.equals(SemanticRelation.meronymy)) {
-                return pUtils.getMeronyms(synset);
+                return PointerUtils.getMeronyms(synset);
             }
             else if (relationType.equals(SemanticRelation.cohyponymy)) {
-                return pUtils.getCoordinateTerms(synset);
+                return PointerUtils.getCoordinateTerms(synset);
             }
         } catch (NullPointerException e) {
             // silently catch that - I do not know why JWNL throws that exception here
@@ -357,10 +356,10 @@ public class WordNetResource extends AbstractResource {
     private PointerTargetNodeList getNodeListByRelation(Synset synset, LexicalRelation lexicalRelation) throws LexicalSemanticResourceException {
         try {
             if (lexicalRelation.equals(LexicalRelation.antonymy)) {
-                return pUtils.getAntonyms(synset);
+                return PointerUtils.getAntonyms(synset);
             }
             else if (lexicalRelation.equals(LexicalRelation.synonymy)) {
-                return pUtils.getSynonyms(synset);
+                return PointerUtils.getSynonyms(synset);
             }
         } catch (NullPointerException e) {
             // silently catch that - I do not know why JWNL throws that exception here
@@ -398,15 +397,14 @@ public class WordNetResource extends AbstractResource {
 
     private PointerTargetNodeList getNodeListByRelationName(Synset synset, String relationType) throws LexicalSemanticResourceException {
         try {
-
-        	Class<? extends PointerUtils> cls = pUtils.getClass();
+        	Class<? extends PointerUtils> cls =  PointerUtils.class;
         	Class[] params = new Class[1];
         	params[0] = Synset.class;
         	String methodName = "get"+relationType+"s";
 
         	Method method = cls.getDeclaredMethod(methodName, params);
-        	return (PointerTargetNodeList) method.invoke(pUtils, synset);
-        	
+        	return (PointerTargetNodeList) method.invoke(null, synset);
+
 		} catch (Exception e) {
             // silently catch that - I do not know why JWNL throws NullPointerException exception here
 			// if an Exception occured, we simply return a null as the result NodeList
@@ -436,7 +434,7 @@ public class WordNetResource extends AbstractResource {
             return null;
         }
     }
-    
+
     @Override
     public Entity getMostFrequentEntity(String lexeme)
         throws LexicalSemanticResourceException
@@ -447,7 +445,7 @@ public class WordNetResource extends AbstractResource {
                 return e;
             }
         }
-        
+
         return null;
     }
 

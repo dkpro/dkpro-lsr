@@ -20,11 +20,15 @@ package de.tudarmstadt.ukp.dkpro.lexsemresource.wordnet.util;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Iterator;
 
-import net.didion.jwnl.data.POS;
-import net.didion.jwnl.data.Synset;
-import net.didion.jwnl.dictionary.Dictionary;
+import net.sf.extjwnl.JWNLException;
+import net.sf.extjwnl.data.POS;
+import net.sf.extjwnl.data.Synset;
+import net.sf.extjwnl.dictionary.Dictionary;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -36,7 +40,7 @@ public class DomainResolverTest {
 
 	private static LexicalSemanticResource wordnet;
 	private static DomainResolver dr;
-	
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		try {
@@ -50,16 +54,20 @@ public class DomainResolverTest {
 
 	/**
 	 * Values measured with WN-Domains 3.2 and WN 3.0 Synsets
+	 * @throws JWNLException
+	 * @throws FileNotFoundException
 	 */
 	@Test
-	public void testGetDomain() {
-		Dictionary dict = Dictionary.getInstance();
+	public void testGetDomain() throws FileNotFoundException, JWNLException {
+        Dictionary dict = Dictionary.getInstance(new FileInputStream(new File(
+                "src/main/resources/resource/WordNet_3/wordnet_properties.xml")
+                ));
 		assertTrue(2737 >= test(dict,dr,POS.NOUN));
 		assertTrue(971 >= test(dict,dr,POS.ADJECTIVE));
 		assertTrue(72 >= test(dict,dr,POS.ADVERB));
 		assertTrue(361 >= test(dict,dr,POS.VERB));
 	}
-	
+
 	private static int test(Dictionary dict,DomainResolver dr,POS p) {
 		System.out.println("Type: "+p.toString());
 		Iterator<Synset> iter;
@@ -69,8 +77,10 @@ public class DomainResolverTest {
 			int cntS=0;
 			while(iter.hasNext()) {
 				Synset next=iter.next();
-				if(dr.getDomain(next)==null) cntF++;
-				else {
+				if(dr.getDomain(next)==null) {
+                    cntF++;
+                }
+                else {
 					//System.out.println(next.toString()+" : "+dr.getDomain(next));
 					cntS++;
 				}

@@ -27,13 +27,13 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.zip.GZIPInputStream;
 
-import net.didion.jwnl.data.POS;
-import net.didion.jwnl.data.Synset;
+import net.sf.extjwnl.data.POS;
+import net.sf.extjwnl.data.Synset;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.exception.ResourceLoaderException;
 
 /**
  * Takes a WN3.0 Synset and returns the domain according to wn-domains-3.2
- * 
+ *
  * @author cwirth
  *
  */
@@ -47,16 +47,21 @@ public class DomainResolver {
 
 	public String getDomain(Synset syn) {
 		String off=Long.toString(syn.getOffset());
-		while(off.length()<8)
-			off="0"+off;
-		if(syn.getPOS().equals(POS.NOUN))
-			off="1"+off;
-		if(syn.getPOS().equals(POS.VERB))
-			off="2"+off;
-		if(syn.getPOS().equals(POS.ADJECTIVE))
-			off="3"+off;
-		if(syn.getPOS().equals(POS.ADVERB))
-			off="4"+off;
+		while(off.length()<8) {
+            off="0"+off;
+        }
+		if(syn.getPOS().equals(POS.NOUN)) {
+            off="1"+off;
+        }
+		if(syn.getPOS().equals(POS.VERB)) {
+            off="2"+off;
+        }
+		if(syn.getPOS().equals(POS.ADJECTIVE)) {
+            off="3"+off;
+        }
+		if(syn.getPOS().equals(POS.ADVERB)) {
+            off="4"+off;
+        }
 		return map.get(off);
 	}
 
@@ -77,14 +82,18 @@ public class DomainResolver {
 				//while(data[0].startsWith("0"))
 				//	data[0]=data[0].substring(1);
 				String[] key = data[0].split("-");
-				if(key[1].equals("n"))
-					key[0]="1"+key[0];
-				if(key[1].equals("v"))
-					key[0]="2"+key[0];
-				if(key[1].equals("a") || key[1].equals("s"))
-					key[0]="3"+key[0];
-				if(key[1].equals("r"))
-					key[0]="4"+key[0];
+				if(key[1].equals("n")) {
+                    key[0]="1"+key[0];
+                }
+				if(key[1].equals("v")) {
+                    key[0]="2"+key[0];
+                }
+				if(key[1].equals("a") || key[1].equals("s")) {
+                    key[0]="3"+key[0];
+                }
+				if(key[1].equals("r")) {
+                    key[0]="4"+key[0];
+                }
 				if(synmap.containsKey(key[0])) {
 					map.put(synmap.get(key[0]), data[1]);
 					cs++;

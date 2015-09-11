@@ -32,8 +32,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import de.tudarmstadt.ukp.dkpro.lexsemresource.Entity;
-import de.tudarmstadt.ukp.dkpro.lexsemresource.LexicalSemanticResource;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.Entity.PoS;
+import de.tudarmstadt.ukp.dkpro.lexsemresource.LexicalSemanticResource;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.LexicalSemanticResource.LexicalRelation;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.LexicalSemanticResource.SemanticRelation;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.exception.LexicalSemanticResourceException;
@@ -52,7 +52,6 @@ public class WordNetResourceTest
 		try {
 			wordnet = new WordNetResource(
 					"src/main/resources/resource/WordNet_3/wordnet_properties.xml");
-			// wordnet = ResourceFactory.getInstance().get("wordnet", "en");
 		}
 		catch (Exception e) {
 		    e.printStackTrace();
@@ -138,8 +137,8 @@ public class WordNetResourceTest
 		expectedResults.add("shoetree#319111|tree#319111|---v");
 		expectedResults.add("corner#1934205|tree#1934205|---v");
 		expectedResults.add("tree#13104059|---n");
-		expectedResults.add("tree#13912260|tree_diagram#13912260|---n");
-		expectedResults.add("Sir_Herbert_Beerbohm_Tree#11348160|Tree#11348160|---n");
+		expectedResults.add("tree#13912260|tree diagram#13912260|---n");
+		expectedResults.add("Sir Herbert Beerbohm Tree#11348160|Tree#11348160|---n");
 
 		Set<Entity> entities = wordnet.getEntity("tree");
 		assertEquals(7, entities.size());
@@ -185,8 +184,8 @@ public class WordNetResourceTest
 		wordnet.setIsCaseSensitive(false);
 		Set<String> expectedResults = new HashSet<String>();
 		expectedResults.add("tree#13104059|---n");
-		expectedResults.add("tree#13912260|tree_diagram#13912260|---n");
-		expectedResults.add("Sir_Herbert_Beerbohm_Tree#11348160|Tree#11348160|---n");
+		expectedResults.add("tree#13912260|tree diagram#13912260|---n");
+		expectedResults.add("Sir Herbert Beerbohm Tree#11348160|Tree#11348160|---n");
 
 		Set<Entity> entities = wordnet.getEntity("tree", PoS.n);
 		assertEquals(3, entities.size());
@@ -203,8 +202,8 @@ public class WordNetResourceTest
 		wordnet.setIsCaseSensitive(true);
 		expectedResults = new HashSet<String>();
 		expectedResults.add("tree#13104059|---n");
-		expectedResults.add("tree#13912260|tree_diagram#13912260|---n");
-		expectedResults.add("Sir_Herbert_Beerbohm_Tree#11348160|Tree#11348160|---n");
+		expectedResults.add("tree#13912260|tree diagram#13912260|---n");
+		expectedResults.add("Sir Herbert Beerbohm Tree#11348160|Tree#11348160|---n");
 
 		entities = wordnet.getEntity("tree", PoS.n);
 		assertEquals(3, entities.size());
@@ -222,12 +221,12 @@ public class WordNetResourceTest
 
 		wordnet.setIsCaseSensitive(false);
 		Set<String> expectedResults = new HashSet<String>();
-		expectedResults.add("tree#13912260|tree_diagram#13912260|---n");
+		expectedResults.add("tree#13912260|tree diagram#13912260|---n");
 
 		// also test whether compare
 		Map<String, String> treeLexemes = new HashMap<String, String>();
 		treeLexemes.put("tree", "13912260");
-		treeLexemes.put("tree_diagram", "13912260");
+		treeLexemes.put("tree diagram", "13912260");
 		Entity treeEntity = new Entity(treeLexemes, PoS.n);
 
 		Set<Entity> entities = wordnet.getEntity("tree", PoS.n, "13912260");
@@ -480,7 +479,7 @@ public class WordNetResourceTest
 		EntityGraph eg = EntityGraphManager.getEntityGraph(wordnet, EntityGraphType.JGraphT);
 		eg.getIntrinsicInformationContent(wordnet.getEntity("tree").iterator().next());
 	}
-	
+
 	@Test
 	public void testGetMostFrequentEntity()
 	    throws Exception

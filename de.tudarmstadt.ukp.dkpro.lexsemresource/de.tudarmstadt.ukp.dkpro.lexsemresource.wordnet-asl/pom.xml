@@ -34,11 +34,11 @@
   		<groupId>de.tudarmstadt.ukp.dkpro.lexsemresource</groupId>
   		<artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource.core-asl</artifactId>
   	</dependency>
-    <dependency>
-        <groupId>net.didion.jwnl</groupId>
-        <artifactId>jwnl</artifactId>
-        <version>1.4.0.rc2</version>
-    </dependency>
+        <dependency>
+        	<groupId>net.sf.extjwnl</groupId>
+        	<artifactId>extjwnl</artifactId>
+        	<version>1.9</version>
+        </dependency>
     <dependency>
         <groupId>edu.mit.jwi</groupId>
         <artifactId>edu.mit.jwi</artifactId>

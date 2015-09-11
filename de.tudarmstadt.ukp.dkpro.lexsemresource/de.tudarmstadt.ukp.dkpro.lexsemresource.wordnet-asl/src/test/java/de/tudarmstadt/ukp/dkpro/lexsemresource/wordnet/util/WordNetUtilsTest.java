@@ -18,7 +18,7 @@
 package de.tudarmstadt.ukp.dkpro.lexsemresource.wordnet.util;
 
 import static org.junit.Assert.fail;
-import net.didion.jwnl.data.POS;
+import net.sf.extjwnl.data.POS;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -43,10 +43,10 @@ public class WordNetUtilsTest
             fail(e.getMessage());
         }
     }
-    
+
     @Test
     public void wordNetUtilsTest() throws LexicalSemanticResourceException {
-        
+
         System.out.println(
                 WordNetUtils.getExactEntity(((WordNetResource) wordnet).getDict(), POS.VERB, 1025455)
         );

@@ -19,15 +19,16 @@ package de.tudarmstadt.ukp.dkpro.lexsemresource.wordnet.util;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.didion.jwnl.JWNLException;
-import net.didion.jwnl.data.IndexWord;
-import net.didion.jwnl.data.POS;
-import net.didion.jwnl.data.Synset;
-import net.didion.jwnl.data.Word;
-import net.didion.jwnl.dictionary.Dictionary;
+import net.sf.extjwnl.JWNLException;
+import net.sf.extjwnl.data.IndexWord;
+import net.sf.extjwnl.data.POS;
+import net.sf.extjwnl.data.Synset;
+import net.sf.extjwnl.data.Word;
+import net.sf.extjwnl.dictionary.Dictionary;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.Entity;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.Entity.PoS;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.exception.LexicalSemanticResourceException;
@@ -66,9 +67,9 @@ public class WordNetUtils
 
 		long sense = synset.getOffset();
 
-		Word[] words = synset.getWords();
-		for (int i = 0; i < words.length; i++) {
-			String lexeme = words[i].getLemma();
+		List<Word> words = synset.getWords();
+		for (Word word : words) {
+			String lexeme = word.getLemma();
 			// remove some suffixes that might be added to the synset representation by JWNL
 			lexeme = cleanLexeme(lexeme);
 			result.put(lexeme, new Long(sense).toString());
@@ -179,9 +180,9 @@ public class WordNetUtils
 				return resultsSynsets;
 			}
 
-			Synset[] synsets = indexWord.getSenses();
-			for (int i = 0; i < synsets.length; i++) {
-				resultsSynsets.add(synsets[i]);
+			List<Synset> synsets = indexWord.getSenses();
+			for (Synset synset : synsets) {
+				resultsSynsets.add(synset);
 			}
 
 			return resultsSynsets;
@@ -212,15 +213,15 @@ public class WordNetUtils
 				return null;
 			}
 
-			Synset[] synsets = indexWord.getSenses();
+			List<Synset> synsets = indexWord.getSenses();
 
 			// the given lexeme doesn't have this many senses
-			if (sense >= synsets.length) {
+			if (sense >= synsets.size()) {
 				return null;
 			}
 
 			// sense IDs are normally numbered from 1 ... ǹum_senses
-			Synset synset = synsets[sense - 1];
+			Synset synset = synsets.get(sense - 1);
 			return synset;
 
 		}
@@ -394,16 +395,11 @@ public class WordNetUtils
             return null;
         }
 
-        Synset[] synsets;
-        try {
-            synsets = indexWord.getSenses();
-        }
-        catch (JWNLException e) {
-            throw new LexicalSemanticResourceException(e);
-        }
-        
-        if (synsets.length > 0) {
-            return synsetToEntity(synsets[0]);
+        List<Synset> synsets;
+        synsets = indexWord.getSenses();
+
+        if (synsets.size() > 0) {
+            return synsetToEntity(synsets.get(0));
         }
 
 	    return null;

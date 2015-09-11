@@ -19,10 +19,10 @@ package de.tudarmstadt.ukp.dkpro.lexsemresource.wordnet.util;
 
 import java.util.Iterator;
 
-import net.didion.jwnl.JWNLException;
-import net.didion.jwnl.data.POS;
-import net.didion.jwnl.data.Synset;
-import net.didion.jwnl.dictionary.Dictionary;
+import net.sf.extjwnl.JWNLException;
+import net.sf.extjwnl.data.POS;
+import net.sf.extjwnl.data.Synset;
+import net.sf.extjwnl.dictionary.Dictionary;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.Entity;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.LexicalSemanticEntityIterator;
 
@@ -33,7 +33,7 @@ public class WordNetEntityIterator extends LexicalSemanticEntityIterator {
     Iterator advIter;
     Iterator nounIter;
     Iterator verbIter;
-    
+
     public WordNetEntityIterator(Dictionary dict) {
         try {
             this.adjIter = dict.getSynsetIterator(POS.ADJECTIVE);
@@ -44,7 +44,7 @@ public class WordNetEntityIterator extends LexicalSemanticEntityIterator {
             e.printStackTrace();
         }
     }
-    
+
     @Override
     public boolean hasNext() {
         if (adjIter.hasNext() || advIter.hasNext() || nounIter.hasNext() || verbIter.hasNext()) {
