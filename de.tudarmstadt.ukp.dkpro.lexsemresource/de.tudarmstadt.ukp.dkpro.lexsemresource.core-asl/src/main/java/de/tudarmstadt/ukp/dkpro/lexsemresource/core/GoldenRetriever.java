@@ -22,11 +22,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import de.tudarmstadt.ukp.dkpro.lexsemresource.Entity;
-import de.tudarmstadt.ukp.dkpro.lexsemresource.LexicalSemanticResource;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.Entity.PoS;
+import de.tudarmstadt.ukp.dkpro.lexsemresource.LexicalSemanticResource;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.exception.LexicalSemanticResourceException;
 
 /**

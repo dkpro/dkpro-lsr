@@ -22,17 +22,18 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import de.tudarmstadt.ukp.dkpro.lexsemresource.Entity;
-import de.tudarmstadt.ukp.dkpro.lexsemresource.LexicalSemanticResource;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.Entity.PoS;
+import de.tudarmstadt.ukp.dkpro.lexsemresource.LexicalSemanticResource;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.exception.LexicalSemanticResourceException;
 
 public abstract class AbstractResource implements LexicalSemanticResource {
 
 	protected boolean isCaseSensitive = false;
 
+    @Override
     public Entity getEntity(Map<String, String> lexemes, PoS pos) throws LexicalSemanticResourceException {
         if (lexemes == null) {
             return null;
@@ -49,6 +50,7 @@ public abstract class AbstractResource implements LexicalSemanticResource {
         return null;
     }
 
+    @Override
     public Entity getEntityById(String id) throws LexicalSemanticResourceException {
         String splitter = "\\" + Entity.conceptSeparator + Entity.posSeparator;
         String[] conceptsPosParts = id.split(splitter);
@@ -75,6 +77,7 @@ public abstract class AbstractResource implements LexicalSemanticResource {
     }
 
 
+    @Override
     public Set<Entity> getNeighbors(Entity entity) throws LexicalSemanticResourceException  {
         Set<Entity> neighbors = new HashSet<Entity>();
         neighbors.addAll(getParents(entity));
@@ -82,6 +85,7 @@ public abstract class AbstractResource implements LexicalSemanticResource {
         return neighbors;
     }
 
+    @Override
     public String getPseudoGloss(Entity entity, Set<LexicalRelation> lexicalRelations, Map<SemanticRelation, Integer> semanticRelations) throws LexicalSemanticResourceException {
         Set<String> pseudoGloss = new HashSet<String>();
 
@@ -99,10 +103,12 @@ public abstract class AbstractResource implements LexicalSemanticResource {
         return StringUtils.join(pseudoGloss, " ").trim();
     }
 
+    @Override
     public void setIsCaseSensitive(boolean isCaseSensitive){
         this.isCaseSensitive = isCaseSensitive;
     }
 
+    @Override
     public boolean getIsCaseSensitive(){
         return this.isCaseSensitive;
     }

@@ -17,6 +17,7 @@
  *******************************************************************************/
 package de.tudarmstadt.ukp.dkpro.lexsemresource.wordnet;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -73,7 +74,12 @@ public class WordNetWindowsResource extends AbstractResource {
 
 		// construct the dictionary object and open it
 		dict = new Dictionary(url);
-		dict.open();
+		try {
+            dict.open();
+        }
+        catch (IOException e) {
+            throw new LexicalSemanticResourceException(e);
+        }
 		setIsCaseSensitive(isCaseSensitive);
 
 	}
