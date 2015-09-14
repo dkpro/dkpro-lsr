@@ -236,4 +236,8 @@
 		</profile>
 	</profiles>
 	<description>DKPro LSR (Lexical Semantic Resources) is a unified API for several lexical-semantic resources. It currently contains access to GermaNet, OpenThesaurus, Wikipedia, Wiktionary, and WordNet.</description>
+	<organization>
+		<url>https://www.ukp.tu-darmstadt.de/</url>
+		<name>Ubiquitous Knowledge Processing (UKP) Lab, Technische Universität Darmstadt</name>
+	</organization>
 </project>
