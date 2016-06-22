@@ -44,6 +44,7 @@ import org.jgrapht.graph.DefaultEdge;
 
 import de.tudarmstadt.ukp.dkpro.lexsemresource.Entity;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.LexicalSemanticResource;
+import de.tudarmstadt.ukp.dkpro.lexsemresource.core.ResourceFactory;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.core.util.LoggingUtils;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.core.util.ProgressMeter;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.exception.LexicalSemanticResourceException;
@@ -83,6 +84,7 @@ public class EntityGraphJGraphT
 	private Map<String, List<String>> rootPathMap = null;
 	private final String rootPathMapFilename = "rootPathMap";
 
+	private File graphDirectory;
 	private File serializedGraphFile;
 	private String graphId;
 
@@ -112,12 +114,22 @@ public class EntityGraphJGraphT
 		graphId = "graphSer_" + lexSemResource.getResourceName() + nameSuffix + "_"
 				+ lexSemResource.getResourceVersion();
 
-		String defaultSerializedGraphLocation = graphId;
-		serializedGraphFile = new File(defaultSerializedGraphLocation);
+        if (System.getenv(ResourceFactory.ENV_DKPRO_HOME) == null) {
+            throw new LexicalSemanticResourceException("Environment variable ["
+                    + ResourceFactory.ENV_DKPRO_HOME + "] not set");
+        }
+
+        graphDirectory = new File(System.getenv(ResourceFactory.ENV_DKPRO_HOME)
+                + "/" + EntityGraphJGraphT.class.getName());
+        if (!graphDirectory.exists()) {
+            graphDirectory.mkdir();
+        }
+
+        serializedGraphFile = new File(graphDirectory, graphId);
 		if (serializedGraphFile.exists()) {
 			try {
 				logger.info("Loading entity graph: " + serializedGraphFile.getAbsolutePath());
-				directedGraph = GraphSerialization.loadGraph(defaultSerializedGraphLocation);
+				directedGraph = GraphSerialization.loadGraph(serializedGraphFile.getAbsolutePath());
 				undirectedGraph = new AsUndirectedGraph<Entity, DefaultEdge>(directedGraph);
 				logger.info("Finished loading entity graph.");
 			}
@@ -1119,8 +1131,9 @@ public class EntityGraphJGraphT
 		lcc.removeCycles();
 		int nrOfNodes = lcc.getNumberOfNodes();
 
-		File hyponymCountMapSerializedFile = new File(getGraphId() + "_" + hyponymCountMapFilename
-				+ (lexSemRes.getIsCaseSensitive() ? "-cs" : "-cis"));
+        File hyponymCountMapSerializedFile = new File(graphDirectory,
+                getGraphId() + "_" + hyponymCountMapFilename
+                        + (lexSemRes.getIsCaseSensitive() ? "-cs" : "-cis"));
 		hyponymCountMap = new HashMap<String, Integer>();
 
 		if (hyponymCountMapSerializedFile.exists()) {
