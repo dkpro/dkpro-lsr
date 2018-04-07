@@ -97,6 +97,31 @@ public class EntityGraphJGraphT
 
 	private LexicalSemanticResource lexSemRes;
 
+    public EntityGraphJGraphT()
+    {
+        this(null);
+    }
+
+    public EntityGraphJGraphT(File aGraphDirectory)
+    {
+        if (aGraphDirectory != null) {
+            graphDirectory = aGraphDirectory;
+        }
+        else {
+            if (System.getenv(ResourceFactory.ENV_DKPRO_HOME) == null) {
+                throw new IllegalStateException(
+                        "Environment variable [" + ResourceFactory.ENV_DKPRO_HOME + "] not set");
+            }
+            
+            graphDirectory = new File(System.getenv(ResourceFactory.ENV_DKPRO_HOME)
+                    + "/" + EntityGraphJGraphT.class.getName());
+        }
+        
+        if (!graphDirectory.exists()) {
+            graphDirectory.mkdirs();
+        }
+    }
+	
 	protected EntityGraphJGraphT getEntityGraphJGraphT(LexicalSemanticResource aLsr)
 		throws LexicalSemanticResourceException
 	{
@@ -113,17 +138,6 @@ public class EntityGraphJGraphT
 
 		graphId = "graphSer_" + lexSemResource.getResourceName() + nameSuffix + "_"
 				+ lexSemResource.getResourceVersion();
-
-        if (System.getenv(ResourceFactory.ENV_DKPRO_HOME) == null) {
-            throw new LexicalSemanticResourceException("Environment variable ["
-                    + ResourceFactory.ENV_DKPRO_HOME + "] not set");
-        }
-
-        graphDirectory = new File(System.getenv(ResourceFactory.ENV_DKPRO_HOME)
-                + "/" + EntityGraphJGraphT.class.getName());
-        if (!graphDirectory.exists()) {
-            graphDirectory.mkdir();
-        }
 
         serializedGraphFile = new File(graphDirectory, graphId);
 		if (serializedGraphFile.exists()) {

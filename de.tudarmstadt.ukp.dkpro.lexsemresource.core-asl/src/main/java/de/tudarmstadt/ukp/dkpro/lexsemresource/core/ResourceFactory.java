@@ -40,6 +40,7 @@ public class ResourceFactory
 {
 	public static final String ENV_DKPRO_HOME = "DKPRO_HOME";
 	public final static String CONFIG_FILE = "resources.xml";
+    public final static String DEFAULT_CONFIG_FILE = "/de/tudarmstadt/ukp/dkpro/lexsemresource/core/default-resources.xml";
 
 	private static ResourceFactory loader;
 
@@ -72,8 +73,8 @@ public class ResourceFactory
 			// Check in classpath
 			if (resourceXmlUrl == null) {
 				resourceXmlUrl = ResourceFactory.class
-						.getResource(CONFIG_FILE);
-				locs.add("Classpath: " + CONFIG_FILE);
+						.getResource("/"+CONFIG_FILE);
+				locs.add("Classpath: /" + CONFIG_FILE);
 			}
 
 			// Check in default file system location
@@ -87,6 +88,14 @@ public class ResourceFactory
 				locs.add(new File(CONFIG_FILE).getAbsolutePath());
 			}
 
+			// Check default resources file in classpath (this should never fail)
+            if (resourceXmlUrl == null) {
+                resourceXmlUrl = ResourceFactory.class
+                        .getResource(DEFAULT_CONFIG_FILE);
+                locs.add("Classpath: " + DEFAULT_CONFIG_FILE);
+            }
+			
+			
 			// Bail out if still not found
 			if (resourceXmlUrl == null) {
 				throw new ResourceLoaderException(
