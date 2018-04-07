@@ -43,8 +43,8 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
 import de.tudarmstadt.ukp.dkpro.lexsemresource.Entity;
+import de.tudarmstadt.ukp.dkpro.lexsemresource.LSRFramework;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.LexicalSemanticResource;
-import de.tudarmstadt.ukp.dkpro.lexsemresource.core.ResourceFactory;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.core.util.LoggingUtils;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.core.util.ProgressMeter;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.exception.LexicalSemanticResourceException;
@@ -108,13 +108,7 @@ public class EntityGraphJGraphT
             graphDirectory = aGraphDirectory;
         }
         else {
-            if (System.getenv(ResourceFactory.ENV_DKPRO_HOME) == null) {
-                throw new IllegalStateException(
-                        "Environment variable [" + ResourceFactory.ENV_DKPRO_HOME + "] not set");
-            }
-            
-            graphDirectory = new File(System.getenv(ResourceFactory.ENV_DKPRO_HOME)
-                    + "/" + EntityGraphJGraphT.class.getName());
+            graphDirectory = getWorkspace();
         }
         
         if (!graphDirectory.exists()) {
@@ -1619,4 +1613,14 @@ public class EntityGraphJGraphT
 	{
 		return hyponymCountMapUseLcc;
 	}
+
+    /**
+     * Get the workspace directory.
+     *
+     * @return the workspace directory.
+     */
+    private static File getWorkspace()
+    {
+        return new File(LSRFramework.getWorkspace(), EntityGraphJGraphT.class.getName());
+    }
 }

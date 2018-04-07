@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
+import de.tudarmstadt.ukp.dkpro.lexsemresource.LSRFramework;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.LexicalSemanticResource;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.exception.ResourceLoaderException;
 
@@ -38,7 +39,6 @@ import de.tudarmstadt.ukp.dkpro.lexsemresource.exception.ResourceLoaderException
  */
 public class ResourceFactory
 {
-	public static final String ENV_DKPRO_HOME = "DKPRO_HOME";
 	public final static String CONFIG_FILE = "resources.xml";
     public final static String DEFAULT_CONFIG_FILE = "/de/tudarmstadt/ukp/dkpro/lexsemresource/core/default-resources.xml";
 
@@ -152,15 +152,8 @@ public class ResourceFactory
 	 * @return the workspace directory.
 	 * @throws IOException if the workspace cannot be obtained
 	 */
-	private static
-	File getWorkspace()
-	throws IOException
+    private static File getWorkspace() throws IOException
 	{
-		if (System.getenv(ENV_DKPRO_HOME) != null) {
-			File f = new File(System.getenv(ENV_DKPRO_HOME));
-			return new File(f, ResourceFactory.class.getName());
-		}
-
-		throw new IOException("Environment variable ["+ENV_DKPRO_HOME+"] not set");
+        return new File(LSRFramework.getWorkspace(), ResourceFactory.class.getName());
 	}
 }

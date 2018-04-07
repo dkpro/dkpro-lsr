@@ -2,7 +2,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
-  <bean id="wordnet-en" lazy-init="true"
-    class="de.tudarmstadt.ukp.lexsemresource.resource.WordNetResource">
+  <bean id="wordnet-default-en" lazy-init="true"
+    class="de.tudarmstadt.ukp.dkpro.lexsemresource.wordnet.WordNetResource">
   </bean>
 </beans>
