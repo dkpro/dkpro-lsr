@@ -63,8 +63,8 @@ import edu.uci.ics.jung.graph.util.Context;
  * graph is directed but some of the algorithms (for eccentricity and related)
  * run on its undirected version.
  *
- * @author garoufi, Tristan Miller <miller@ukp.informatik.tu-darmstadt.de>
- *
+ * @author Tristan Miller
+ * @author garoufi
  */
 public class EntityGraphJUNG
 	implements EntityGraph
