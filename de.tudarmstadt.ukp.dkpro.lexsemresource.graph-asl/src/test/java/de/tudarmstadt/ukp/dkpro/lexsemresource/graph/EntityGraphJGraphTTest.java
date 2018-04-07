@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -65,8 +66,12 @@ public class EntityGraphJGraphTTest
 		catch (Exception e) {
 			Assume.assumeNoException(e);
 		}
+		
+		File testOutput = new File("target/test-output/EntityGraphJGraphTTest");
+		testOutput.mkdirs();
+		
 		graph = EntityGraphManager.getEntityGraph(wikiResource,
-				EntityGraphType.JGraphT);
+				EntityGraphType.JGraphT, testOutput);
 	}
 
 	@Test
