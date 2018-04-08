@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
+import de.tudarmstadt.ukp.dkpro.lexsemresource.LSRFramework;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.LexicalSemanticResource;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.exception.ResourceLoaderException;
 
@@ -38,8 +39,8 @@ import de.tudarmstadt.ukp.dkpro.lexsemresource.exception.ResourceLoaderException
  */
 public class ResourceFactory
 {
-	public static final String ENV_DKPRO_HOME = "DKPRO_HOME";
 	public final static String CONFIG_FILE = "resources.xml";
+    public final static String DEFAULT_CONFIG_FILE = "/de/tudarmstadt/ukp/dkpro/lexsemresource/core/default-resources.xml";
 
 	private static ResourceFactory loader;
 
@@ -72,8 +73,8 @@ public class ResourceFactory
 			// Check in classpath
 			if (resourceXmlUrl == null) {
 				resourceXmlUrl = ResourceFactory.class
-						.getResource(CONFIG_FILE);
-				locs.add("Classpath: " + CONFIG_FILE);
+						.getResource("/"+CONFIG_FILE);
+				locs.add("Classpath: /" + CONFIG_FILE);
 			}
 
 			// Check in default file system location
@@ -87,6 +88,14 @@ public class ResourceFactory
 				locs.add(new File(CONFIG_FILE).getAbsolutePath());
 			}
 
+			// Check default resources file in classpath (this should never fail)
+            if (resourceXmlUrl == null) {
+                resourceXmlUrl = ResourceFactory.class
+                        .getResource(DEFAULT_CONFIG_FILE);
+                locs.add("Classpath: " + DEFAULT_CONFIG_FILE);
+            }
+			
+			
 			// Bail out if still not found
 			if (resourceXmlUrl == null) {
 				throw new ResourceLoaderException(
@@ -143,15 +152,8 @@ public class ResourceFactory
 	 * @return the workspace directory.
 	 * @throws IOException if the workspace cannot be obtained
 	 */
-	private static
-	File getWorkspace()
-	throws IOException
+    private static File getWorkspace() throws IOException
 	{
-		if (System.getenv(ENV_DKPRO_HOME) != null) {
-			File f = new File(System.getenv(ENV_DKPRO_HOME));
-			return new File(f, ResourceFactory.class.getName());
-		}
-
-		throw new IOException("Environment variable ["+ENV_DKPRO_HOME+"] not set");
+        return new File(LSRFramework.getWorkspace(), ResourceFactory.class.getName());
 	}
 }

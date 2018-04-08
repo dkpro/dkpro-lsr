@@ -41,9 +41,6 @@ import net.sf.extjwnl.data.list.PointerTargetNodeList;
 import net.sf.extjwnl.dictionary.Dictionary;
 import net.sf.extjwnl.dictionary.Dictionary.Version;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import de.tudarmstadt.ukp.dkpro.lexsemresource.Entity;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.Entity.PoS;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.core.AbstractResource;
@@ -51,9 +48,9 @@ import de.tudarmstadt.ukp.dkpro.lexsemresource.exception.LexicalSemanticResource
 import de.tudarmstadt.ukp.dkpro.lexsemresource.wordnet.util.WordNetEntityIterable;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.wordnet.util.WordNetUtils;
 
-public class WordNetResource extends AbstractResource {
-    private final Log logger = LogFactory.getLog(getClass());
-
+public class WordNetResource
+    extends AbstractResource
+{
     private static final String RESOURCE_NAME = "WordNet";
 
     private Dictionary dict;
@@ -62,32 +59,48 @@ public class WordNetResource extends AbstractResource {
 
     private int numberOfEntities = -1;
 
-    public WordNetResource(String wordNetPropertiesFile) throws LexicalSemanticResourceException {
+    public WordNetResource() throws LexicalSemanticResourceException
+    {
+        this(null);
+    }
+
+    public WordNetResource(String wordNetPropertiesFile) throws LexicalSemanticResourceException
+    {
         try {
-        	InputStream is;
-        	URL url = getClass().getResource("/"+wordNetPropertiesFile);
-        	if (url != null) {
-        		is = url.openStream();
-        	}
-        	else {
-        		try {
-        			url = new URL(wordNetPropertiesFile);
-        			is = url.openStream();
-        		}
-        		catch (MalformedURLException e) {
-        			// Ignore, we try if it is a file.
-            		is = new FileInputStream(wordNetPropertiesFile);
-        		}
-        	}
-            this.dict = Dictionary.getInstance(is);
+            InputStream is;
+            if (wordNetPropertiesFile != null) {
+                try {
+                    URL url = getClass().getResource("/" + wordNetPropertiesFile);
+                    if (url != null) {
+                        is = url.openStream();
+                    }
+                    else {
+                        try {
+                            url = new URL(wordNetPropertiesFile);
+                            is = url.openStream();
+                        }
+                        catch (MalformedURLException e) {
+                            // Ignore, we try if it is a file.
+                            is = new FileInputStream(wordNetPropertiesFile);
+                        }
+                    }
+                    this.dict = Dictionary.getInstance(is);
+                }
+                catch (IOException e) {
+                    throw new LexicalSemanticResourceException(
+                            "Could not access WordNet properties file: " + wordNetPropertiesFile,
+                            e);
+                }
+            }
+            else {
+                dict = Dictionary.getDefaultResourceInstance();
+            }
             this.v = dict.getVersion();
             setIsCaseSensitive(isCaseSensitive); //zhu
-        } catch (IOException e) {
-            logger.info("Could not access WordNet properties file: " + wordNetPropertiesFile);
-            throw new LexicalSemanticResourceException(e);
-        } catch (JWNLException e) {
-            logger.info("JWNL exception while initializing reader.");
-            throw new LexicalSemanticResourceException(e);
+        }
+        catch (JWNLException e) {
+            throw new LexicalSemanticResourceException("JWNL exception while initializing reader.",
+                    e);
         }
     }
 

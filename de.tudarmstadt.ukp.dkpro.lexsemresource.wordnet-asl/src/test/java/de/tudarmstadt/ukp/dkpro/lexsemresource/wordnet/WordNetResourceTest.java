@@ -20,8 +20,8 @@ package de.tudarmstadt.ukp.dkpro.lexsemresource.wordnet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -47,18 +47,11 @@ public class WordNetResourceTest
 
 	private static LexicalSemanticResource wordnet;
 
-	@BeforeClass
-	public static void initializeWordNet()
-	{
-		try {
-			wordnet = new WordNetResource(
-					"src/main/resources/resource/WordNet_3/wordnet_properties.xml");
-		}
-		catch (Exception e) {
-		    e.printStackTrace();
-			fail(e.getMessage());
-		}
-	}
+    @BeforeClass
+    public static void initializeWordNet() throws LexicalSemanticResourceException
+    {
+        wordnet = new WordNetResource();
+    }
 
 	@Test
 	public void testContainsLexeme() throws Exception
@@ -476,7 +469,8 @@ public class WordNetResourceTest
 		throws Exception
 	{
 		wordnet.setIsCaseSensitive(false);
-		EntityGraph eg = EntityGraphManager.getEntityGraph(wordnet, EntityGraphType.JGraphT);
+        EntityGraph eg = EntityGraphManager.getEntityGraph(wordnet, EntityGraphType.JGraphT,
+                new File("target/test-output/getEntityGraph"));
 		eg.getIntrinsicInformationContent(wordnet.getEntity("tree").iterator().next());
 	}
 

@@ -17,6 +17,7 @@
  *******************************************************************************/
 package de.tudarmstadt.ukp.dkpro.lexsemresource.graph;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,14 +42,21 @@ public class EntityGraphManager
 		JGraphT, JUNG
 	}
 
-	public static EntityGraph getEntityGraph(LexicalSemanticResource lsr, EntityGraphType type)
-		throws LexicalSemanticResourceException
-	{
+    public static EntityGraph getEntityGraph(LexicalSemanticResource lsr, EntityGraphType type)
+        throws LexicalSemanticResourceException
+    {
+        return getEntityGraph(lsr, type, null);
+    }
+
+    public static EntityGraph getEntityGraph(LexicalSemanticResource lsr, EntityGraphType type,
+            File aGraphDirectory)
+        throws LexicalSemanticResourceException
+    {
 		String graphID = getGraphID(lsr, "");
 		if (!entityGraphMap.containsKey(graphID)) {
 			EntityGraph entityGraph = null;
 			if (type.equals(EntityGraphType.JGraphT)) {
-				EntityGraphJGraphT entityGraphJGraphT = new EntityGraphJGraphT();
+				EntityGraphJGraphT entityGraphJGraphT = new EntityGraphJGraphT(aGraphDirectory);
 				entityGraph = entityGraphJGraphT.getEntityGraphJGraphT(lsr, lsr.getEntities(),
 						"", lsr.getNumberOfEntities());
 			}
