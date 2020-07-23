@@ -41,7 +41,7 @@ import de.tuebingen.uni.sfs.germanet.api.Synset;
 public class GermaNetResource extends AbstractResource {
 
 	private final static String resourceName = "GermaNet";
-	private final static String resourceVersion = "5.0";
+	private final static String resourceVersion = "15.0";
 
 	private final GermaNet gn;
 
