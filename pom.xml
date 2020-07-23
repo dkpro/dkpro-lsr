@@ -19,8 +19,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<artifactId>dkpro-parent-pom</artifactId>
-		<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
-		<version>10</version>
+		<groupId>org.dkpro</groupId>
+		<version>24</version>
 	</parent>
 	<groupId>de.tudarmstadt.ukp.dkpro.lexsemresource</groupId>
 	<artifactId>de.tudarmstadt.ukp.dkpro.lexsemresource-asl</artifactId>
@@ -134,7 +134,7 @@
 			<dependency>
 				<groupId>commons-io</groupId>
 				<artifactId>commons-io</artifactId>
-				<version>2.4</version>
+				<version>2.7</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-logging</groupId>
@@ -144,7 +144,7 @@
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
-				<version>3.4</version>
+				<version>3.11</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>

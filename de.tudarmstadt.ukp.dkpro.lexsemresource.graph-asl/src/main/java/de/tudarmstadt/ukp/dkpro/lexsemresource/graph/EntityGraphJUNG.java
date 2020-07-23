@@ -17,6 +17,8 @@
  *******************************************************************************/
 package de.tudarmstadt.ukp.dkpro.lexsemresource.graph;
 
+import java.text.DecimalFormat;
+import java.text.Format;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -34,7 +36,6 @@ import org.apache.commons.collections15.Transformer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import corejava.Format;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.Entity;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.LexicalSemanticResource;
 import de.tudarmstadt.ukp.dkpro.lexsemresource.core.util.LoggingUtils;
@@ -157,7 +158,7 @@ public class EntityGraphJUNG
 		logger.info("Got PageRank.");
 		Collection<Entity> vertices = directedGraph.getVertices();
 		List<String> rankingList = new ArrayList<String>();
-		Format formatter = new Format("%7.6f");
+		Format formatter = new DecimalFormat("%7.6f");
 
 		for (Entity vertex : vertices) {
 			rankingList.add(formatter.format(ranker.getVertexScore(vertex))
@@ -197,7 +198,7 @@ public class EntityGraphJUNG
 		logger.info("Got HITS.");
 		Collection<Entity> vertices = directedGraph.getVertices();
 		List<String> rankingList = new ArrayList<String>();
-		Format formatter = new Format("%7.6f");
+		Format formatter = new DecimalFormat("%7.6f");
 
 		for (Entity vertex : vertices) {
 			rankingList.add("hub="
@@ -235,7 +236,7 @@ public class EntityGraphJUNG
 		logger.info("Got HITS with priors.");
 		Collection<Entity> vertices = directedGraph.getVertices();
 		List<String> rankingList = new ArrayList<String>();
-		Format formatter = new Format("%7.6f");
+		Format formatter = new DecimalFormat("%7.6f");
 
 		for (Entity vertex : vertices) {
 			rankingList.add("hub="
