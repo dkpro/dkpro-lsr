@@ -59,10 +59,10 @@ public class GermaNetResourceTest {
 	public void initializeGermaNet(){
 		try{
 			if (germaNet == null) {
-		        germaNet = ResourceFactory.getInstance().get("germanet7", "de");
+		        germaNet = ResourceFactory.getInstance().get("germanet15", "de");
             }
 			if (germaNetCaseInsensitive == null) {
-			    germaNetCaseInsensitive = ResourceFactory.getInstance().get("germanet7ci", "de");
+			    germaNetCaseInsensitive = ResourceFactory.getInstance().get("germanet15ci", "de");
 			}
 		} catch(Exception e){
             e.printStackTrace();
@@ -120,14 +120,17 @@ public class GermaNetResourceTest {
     public void testGetEntity() throws LexicalSemanticResourceException {
 
         Set<String> expectedResults = new HashSet<String>();
-        expectedResults.add("Absatz#1|Abschnitt#1|Textabschnitt#1|---n");
-        expectedResults.add("Absatz#4|Schuhabsatz#1|---n");
-        expectedResults.add("Ablagerung#1|Absatz#3|---n");
-        expectedResults.add("Absatz#2|---n");
-        expectedResults.add("Absatz#6|Verkauf#1|Vertrieb#3|---n");
-        expectedResults.add("Absatz#5|Schwelle#2|T\u00fcrabsatz#1|T\u00fcrschwelle#1|---n");
+        expectedResults.add("Abgang#4|Absatz#6|Verkauf#1|Vertrieb#3|---n");
+        expectedResults.add("Absatz#3|---n");
+        expectedResults.add("Absatz#1|---n");
+        expectedResults.add("Absatz#5|Schuhabsatz#1|---n");
+        expectedResults.add("Absatz#2|Abschnitt#1|Textabschnitt#1|Textausschnitt#1|---n");
+        expectedResults.add("Ablagerung#2|Absatz#4|---n");
 
     	Set<Entity> entities = germaNetCaseInsensitive.getEntity("Absatz");
+    	for (Entity entity : entities) {
+            System.out.println(entity.getId());
+        }
         assertEquals(6, entities.size());
         for (Entity entity : entities) {
 			assertTrue(entity.getId(), expectedResults.contains(entity.getId()));
@@ -141,12 +144,12 @@ public class GermaNetResourceTest {
     @Test
     public void testGetEntityPos() throws LexicalSemanticResourceException {
         Set<String> expectedResults = new HashSet<String>();
-        expectedResults.add("Absatz#1|Abschnitt#1|Textabschnitt#1|---n");
-        expectedResults.add("Absatz#4|Schuhabsatz#1|---n");
-        expectedResults.add("Ablagerung#1|Absatz#3|---n");
-        expectedResults.add("Absatz#2|---n");
-        expectedResults.add("Absatz#6|Verkauf#1|Vertrieb#3|---n");
-        expectedResults.add("Absatz#5|Schwelle#2|T\u00fcrabsatz#1|T\u00fcrschwelle#1|---n");
+        expectedResults.add("Absatz#1|---n");
+        expectedResults.add("Absatz#2|Abschnitt#1|Textabschnitt#1|Textausschnitt#1|---n");
+        expectedResults.add("Absatz#3|---n");
+        expectedResults.add("Absatz#5|Schuhabsatz#1|---n");
+        expectedResults.add("Ablagerung#2|Absatz#4|---n");
+        expectedResults.add("Abgang#4|Absatz#6|Verkauf#1|Vertrieb#3|---n");
 
     	Set<Entity> entities = germaNetCaseInsensitive.getEntity("Absatz", PoS.n);
         assertEquals(6, entities.size());
@@ -161,17 +164,18 @@ public class GermaNetResourceTest {
     @Test
     public void testGetEntityPosSense() throws LexicalSemanticResourceException {
         Set<String> expectedResults = new HashSet<String>();
-        expectedResults.add("Auto#1|Automobil#1|Kraftfahrzeug#1|Kraftwagen#1|Motorfahrzeug#1|Motorwagen#2|Wagen#3|---n");
+        expectedResults.add("Auto#1|Automobil#1|Kfz#1|Kraftfahrzeug#1|Kraftwagen#1|Motorfahrzeug#1|Motorwagen#2|Wagen#4|---n");
 
         // also test whether compare
         Map<String,String> autoLexemes = new HashMap<String,String>();
         autoLexemes.put("Kraftfahrzeug", "1");
         autoLexemes.put("Kraftwagen", "1");
         autoLexemes.put("Auto", "1");
-        autoLexemes.put("Wagen", "3");
+        autoLexemes.put("Wagen", "4");
         autoLexemes.put("Motorwagen", "2");
         autoLexemes.put("Motorfahrzeug", "1");
         autoLexemes.put("Automobil", "1");
+        autoLexemes.put("Kfz", "1");
         Entity autoEntity = new Entity(autoLexemes, PoS.n);
 
     	Set<Entity> entities = germaNetCaseInsensitive.getEntity("Auto", PoS.n, "1");
@@ -195,16 +199,16 @@ public class GermaNetResourceTest {
         expectedSynonyms.add("hart");
         expectedSynonyms.add("kaltherzig");
 
-    	Set<String> antonyms = germaNetCaseInsensitive.getRelatedLexemes("kalt", PoS.adj, "3", LexicalRelation.antonymy);
+    	Set<String> antonyms = germaNetCaseInsensitive.getRelatedLexemes("kalt", PoS.adj, "5", LexicalRelation.antonymy);
         assertEquals(1, antonyms.size());
         for (String antonym : antonyms) {
             assertTrue(antonym, expectedAntonyms.contains(antonym));
         }
 
-        antonyms = germaNet.getRelatedLexemes("kAlt", PoS.adj, "3", LexicalRelation.antonymy);
+        antonyms = germaNet.getRelatedLexemes("kAlt", PoS.adj, "5", LexicalRelation.antonymy);
         assertEquals(0, antonyms.size());
 
-        Set<String> synonyms = germaNetCaseInsensitive.getRelatedLexemes("kalt", PoS.adj, "1", LexicalRelation.synonymy);
+        Set<String> synonyms = germaNetCaseInsensitive.getRelatedLexemes("kalt", PoS.adj, "3", LexicalRelation.synonymy);
         assertEquals(3, synonyms.size());
         for (String synonym : synonyms) {
             assertTrue(synonym, expectedSynonyms.contains(synonym));
@@ -240,8 +244,8 @@ public class GermaNetResourceTest {
 
     @Test
     public void testGetNumberOfEntities() throws LexicalSemanticResourceException {
-        assertEquals(74612, germaNetCaseInsensitive.getNumberOfEntities());
-        assertEquals(74612, germaNet.getNumberOfEntities());
+        assertEquals(144113, germaNetCaseInsensitive.getNumberOfEntities());
+        assertEquals(144113, germaNet.getNumberOfEntities());
     }
 
 
