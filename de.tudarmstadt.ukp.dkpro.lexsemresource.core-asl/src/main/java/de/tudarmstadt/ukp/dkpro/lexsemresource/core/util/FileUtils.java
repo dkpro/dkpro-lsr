@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,7 +60,7 @@ public final class FileUtils
 	{
 		OutputStream os = null;
 		try {
-			final File f = File.createTempFile("dkpro_stream", "tmp");
+			final File f = Files.createTempFile("dkpro_stream", "tmp").toFile();
 			f.deleteOnExit();
 			os = new FileOutputStream(f);
 			IOUtils.copy(is, os);
@@ -111,7 +112,7 @@ public final class FileUtils
 
 			// Get a temporary file which will be deleted when the JVM shuts
 			// down.
-			file = File.createTempFile(name, suffix);
+			file = Files.createTempFile(name, suffix).toFile();
 			file.deleteOnExit();
 
 			// Now copy the file from the URL to the file.
